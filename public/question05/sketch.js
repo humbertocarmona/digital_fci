@@ -2,28 +2,85 @@ const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 400;
 const GROUND = CANVAS_HEIGHT - 10;
 
-let itemAButton, itemBButton, itemCButton, itemDButton, itemEButton, startButtonR;
+let itemAButton,
+  itemBButton,
+  itemCButton,
+  itemDButton,
+  itemEButton,
+  startButtonR;
 
 let isRunning = false;
 let update;
 
 let t = 0;
-let ang0, ang1, theta;
-let s, radius;
+let phi0, phi1, phiQ, phi;
+let channelWidth, radius;
 let O, P, Q, R;
+let cameraState;
+let lastCameraState;
+let cam;
+let myFont;
+function preload() {
+  myFont = loadFont("assets/FiraCodeNerdFontMono-Regular.ttf");
+}
 
+let myTrack;
 function setup() {
-  createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-  ang0 = 5 * PI / 4;
-  ang1 = 0.5 * ang0;
-  theta = ang0 + 0.2;
-  radius = toPixelX(0.2);
-  O = { x: toPixelX(0.5), y: toPixelY(0.5) }
-  P = { x: O.x + radius * Math.cos(ang0), y: O.y + radius * Math.sin(ang0) };
-  Q = { x: O.x + radius * Math.cos(ang1), y: O.y + radius * Math.sin(ang1) };
-  R = { x: O.x + radius, y: O.y };
+  createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT, WEBGL);
+  phi0 = (5 * PI) / 4;
+  phi1 = 0;
+  phiQ = (phi0 + phi1) / 2;
 
-  s = 15;
+  radius = toPixelX(0.2);
+  channelWidth = toPixelX(0.05);
+  // Set the camera position
+
+  fill("#ED225D");
+  textFont(myFont);
+  textSize(36);
+
+  cameraState = {
+    eye : createVector(-0.2969671749602142, 565.1867804889768, 412.993722677479),
+    center: createVector(0, 0, 0),
+    up: createVector(0, 1, 0),
+    fov: PI / 3,
+    near: 0.1,
+    far: 1000,
+    aspect: CANVAS_WIDTH / CANVAS_HEIGHT,
+  };
+  
+  cameraState_top_down = {
+    eye: createVector(0, 0, 700),
+    center: createVector(0, 0, 0),
+    up: createVector(0, 1, 0),
+    fov: PI / 3,
+    near: 0.1,
+    far: 1000,
+    aspect: CANVAS_WIDTH / CANVAS_HEIGHT,
+  };
+
+  lastCameraState = cameraState;
+  cam = createCamera(); // Get the current camera object
+
+  camera(
+    cameraState.eye.x,
+    cameraState.eye.y,
+    cameraState.eye.z,
+    cameraState.center.x,
+    cameraState.center.y,
+    cameraState.center.z,
+    cameraState.up.x,
+    cameraState.up.y,
+    cameraState.up.z
+  );
+
+  O = createVector(0, 0, 0);
+  myTrack = new circularChannel(O, radius, channelWidth, phi0, phi1);
+
+  console.log(O);
+  console.log(radius);
+  console.log(channelWidth);
+
   // Create option buttons using helper function
   // Criando o botão ITEM A
   itemAButton = createButton("Opção A");
@@ -59,48 +116,36 @@ function setup() {
 }
 
 function draw() {
-  background(220);
-  update();
+  background(250);
+  orbitControl(); // Allows interaction from this camera position
+  saveCameraState(cam);
 
-  noFill();
-  stroke(0);
-  strokeWeight(3);
+  myTrack.drawTabletop(); // ✅ tabletop from class
+  myTrack.drawCircularTrack();
 
-  arc(O.x, O.y, 2 * radius + s, 2 * radius + s, 0, ang0)
-  arc(O.x, O.y, 2 * radius - s, 2 * radius - s, 0, ang0)
+  phi = lerp(phi0 + 0.2, phi1 - 0.2, constrain(t, 0, 1));
 
-  fill(0);
-  noStroke();
-  textAlign(CENTER, CENTER);
-  textSize(16);
-  ellipse(O.x, O.y, s / 2, s / 2);
-  text("O", O.x + 10, O.y - 10);
-  text("P", P.x - 10, P.y - 10);
-  text("Q", Q.x - 10, Q.y + 15);
-  text("R", R.x + 15, R.y+5);
+  myTrack.drawDisk(phi); // ✅ moving disk
+  myTrack.drawLabeledPoints(); // 👈 This
 
-  ellipse(O.x + radius * Math.cos(theta), O.y + radius * Math.sin(theta), s, s);
+  let g = createVector(0, 0, -1); // gravity vector pointing down
+  let pQ = myTrack.positionAtPhi(phiQ);
+  let vQO = p5.Vector.sub(O, pQ); // vector from Q to O
+  vQO.normalize(); // Normalize the vector
+  vQO.mult(50); // Scale it to a length of 50
 
-  if (isRunning) {
-    theta = theta - 0.05;
-    if (theta <= -0.1) {
-      isRunning = false;
-      theta = theta + 2 * PI;
-    }
-  }
+  let c = vQO.cross(g); // c is (0, 0, 1)
 
-  // time   
-  fill(0);
-  noStroke();
-  textAlign(LEFT, CENTER);
-  textSize(8);
-  text("t = " + t / 10, 10, 10);
+  drawArrow3D(pQ, c, "blue");
 
-  if (isRunning) {
-    t = t + 1;
+  t = t + 0.01;
+  if (t >= 1) {
+    // t = 0;
   }
 }
 
+// the camera looks from (width/2, height/2, (height/2) / tan(PI/6))
+// the center of the canvas is in the (0,0,0) in 3D space
 
 // Helper to convert normalized x to pixel x
 function toPixelX(nx) {
@@ -126,10 +171,11 @@ function drawRuler(xi, xf, yi, yf, delta, show_label = false) {
 
   textAlign(RIGHT, CENTER);
 
-  if (xi === xf) { // vertical ruler
-    const xPixel = xi * width;              // Convert x coordinate
+  if (xi === xf) {
+    // vertical ruler
+    const xPixel = xi * width; // Convert x coordinate
     const yPixelStart = height - yi * height; // Lower bound in pixels
-    const yPixelEnd = height - yf * height;   // Upper bound in pixels
+    const yPixelEnd = height - yf * height; // Upper bound in pixels
 
     strokeWeight(1);
     stroke(0);
@@ -146,14 +192,14 @@ function drawRuler(xi, xf, yi, yf, delta, show_label = false) {
       if (show_label) {
         fill(0);
         noStroke();
-        text(i.toFixed(1), xPixel - 5, y);   // Label the tick mark
+        text(i.toFixed(1), xPixel - 5, y); // Label the tick mark
       }
     }
-
-  } else if (yi === yf) { // horizontal ruler
-    const yPixel = height - yi * height;    // Convert y coordinate
-    const xPixelStart = xi * width;           // Left bound in pixels
-    const xPixelEnd = xf * width;             // Right bound in pixels
+  } else if (yi === yf) {
+    // horizontal ruler
+    const yPixel = height - yi * height; // Convert y coordinate
+    const xPixelStart = xi * width; // Left bound in pixels
+    const xPixelEnd = xf * width; // Right bound in pixels
 
     strokeWeight(2);
     stroke(0);
@@ -161,30 +207,43 @@ function drawRuler(xi, xf, yi, yf, delta, show_label = false) {
 
     // Loop from xi to xf in steps of delta (normalized)
     for (let i = xi; i <= xf; i += delta) {
-      const x = i * width;                // Convert normalized x to pixel x
+      const x = i * width; // Convert normalized x to pixel x
       stroke(0);
       strokeWeight(2);
-      line(x, yPixel - 5, x, yPixel + 5);   // Tick marks
+      line(x, yPixel - 5, x, yPixel + 5); // Tick marks
       if (show_label) {
         fill(0);
         noStroke();
-        text(i.toFixed(1), x, yPixel - 10);    // Label the tick mark
+        text(i.toFixed(1), x, yPixel - 10); // Label the tick mark
       }
     }
 
     // Loop from xi to xf in steps of delta (normalized)
     for (let i = xi; i <= xf; i += delta / 5) {
-      const x = i * width;                // Convert normalized x to pixel x
+      const x = i * width; // Convert normalized x to pixel x
       stroke(0);
       strokeWeight(1);
-      line(x, yPixel - 2, x, yPixel + 2);   // Tick marks
+      line(x, yPixel - 2, x, yPixel + 2); // Tick marks
       if (show_label) {
         fill(0);
         noStroke();
-        text(i.toFixed(1), x, yPixel - 10);    // Label the tick mark
+        text(i.toFixed(1), x, yPixel - 10); // Label the tick mark
       }
     }
   }
+}
+
+function drawInwardVector(x, y) {
+  fill(255);
+  stroke(0);
+
+  strokeWeight(1);
+
+  ellipse(x, y, 12, 12); // Circle
+  stroke(0);
+  strokeWeight(1.5);
+  line(x - 4, y - 4, x + 4, y + 4);
+  line(x - 4, y + 4, x + 4, y - 4);
 }
 
 function drawGround() {
@@ -210,7 +269,6 @@ function updateD() {
 
 function updateE() {
   redraw();
-
 }
 // Option functions
 function option_A() {
@@ -241,4 +299,53 @@ function option_E() {
 function restart() {
   isRunning = false;
   t = 0;
+  camera(
+    lastCameraState.eye.x,
+    lastCameraState.eye.y,
+    lastCameraState.eye.z,
+    lastCameraState.center.x,
+    lastCameraState.center.y,
+    lastCameraState.center.z,
+    lastCameraState.up.x,
+    lastCameraState.up.y,
+    lastCameraState.up.z
+  );
+  console.log(lastCameraState);
+}
+
+function saveCameraState(cam) {
+  lastCameraState.eye.set(cam.eyeX, cam.eyeY, cam.eyeZ);
+  lastCameraState.center.set(cam.centerX, cam.centerY, cam.centerZ);
+  lastCameraState.up.set(cam.upX, cam.upY, cam.upZ);
+}
+
+function drawArrow3D(base, vec, color = "black", scale = 1) {
+  push();
+  stroke(color);
+  fill(color);
+  strokeWeight(2);
+
+  // Go to base position
+  translate(base.x, base.y, base.z);
+
+  let dir = vec.copy().normalize();
+  let len = vec.mag() * scale;
+
+  // Align Z-axis to vector direction
+  let zAxis = createVector(0, 0, 1);
+  let rotationAxis = zAxis.cross(dir);
+  let rotationAngle = acos(zAxis.dot(dir));
+
+  if (rotationAxis.mag() > 0.0001) {
+    rotate(rotationAngle, rotationAxis);
+  }
+
+  // Shaft
+  line(0, 0, 0, 0, 0, len - 10);
+
+  // Arrowhead
+  translate(0, 0, len - 10);
+  rotateX(HALF_PI); // 🔁 Fix Y-axis cone orientation to align with Z
+  cone(4, 10); // Cone originally points along +Y
+  pop();
 }
