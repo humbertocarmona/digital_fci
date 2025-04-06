@@ -28,18 +28,25 @@ function setup() {
   body1 = new Body(x1, y1, v1x, 0, a1x, 0, 10 / CANVAS_WIDTH, 10 / CANVAS_HEIGHT, "A", 50);
   body2 = new Body(x2, y2, v2x, 0, a2x, 0, 10 / CANVAS_WIDTH, 10 / CANVAS_HEIGHT, "A", 50);
   bodies = [body1, body2];
+  
   // Create option buttons using helper function
   // itemAButton = createOptionButton("Opção A", -60, option_A);
   // itemBButton = createOptionButton("Opção B", -30, option_B);
   // itemCButton = createOptionButton("Opção C", 0, option_C);
   // itemDButton = createOptionButton("Opção D", 30, option_D);
-  itemEButton = createOptionButton("Rodar", 60, option_E);
+  // itemEButton = createOptionButton("Rodar", 60, option_E);
+
+  itemEButton = createButton("Rodar");
+  itemEButton.parent("sim-controls");
+  itemEButton.mousePressed(option_E);
 
   // Create restart button
+
   startButtonR = createButton("Reiniciar");
-  startButtonR.position(CANVAS_WIDTH + 70, CANVAS_HEIGHT / 2 + 90);
+  startButtonR.parent("sim-controls");
   startButtonR.mousePressed(restart);
   startButtonR.style("text-align", "left");
+
 }
 
 function draw() {
@@ -87,7 +94,7 @@ function toPixelY(ny) {
 
 function createOptionButton(label, yOffset, callback) {
   const btn = createButton(label);
-  btn.position(CANVAS_WIDTH + 70, CANVAS_HEIGHT / 2 + yOffset);
+  btn.parent("sim-controls");
   btn.mousePressed(callback);
   return btn;
 }

@@ -19,7 +19,7 @@ function setup() {
 
   // Criando o botão ITEM A
   itemAButton = createButton("Opção A");
-  itemAButton.position(width + 70, height / 2 - 60);
+  itemAButton.parent("sim-controls");
   itemAButton.mousePressed(option_A);
 
   // Criando o botão ITEM B
@@ -29,21 +29,21 @@ function setup() {
 
   // Criando o botão ITEM C
   itemCButton = createButton("Opção C");
-  itemCButton.position(width + 70, height / 2);
+  itemCButton.parent("sim-controls");
   itemCButton.mousePressed(option_C);
 
   // Criando o botão ITEM D
   itemDButton = createButton("Opção D");
-  itemDButton.position(width + 70, height / 2 + 30);
+  itemDButton.parent("sim-controls");
   itemDButton.mousePressed(option_D);
 
   // Criando o botão ITEM E
   itemEButton = createButton("Opção E");
-  itemEButton.position(width + 70, height / 2 + 60);
+itemEButton.parent("sim-controls");
   itemEButton.mousePressed(option_E);
 
   startButtonR = createButton("Reiniciar");
-  startButtonR.position(width + 70, height / 2 + 90);
+  startButtonR.parent("sim-controls");
   startButtonR.mousePressed(restart);
   startButtonR.style("text-align", "left");
 }

@@ -46,7 +46,7 @@ function setup() {
 
   // Create restart button
   startButtonR = createButton("Reiniciar");
-  startButtonR.position(CANVAS_WIDTH + 70, CANVAS_HEIGHT / 2 + 90);
+  startButtonR.parent("sim-controls");
   startButtonR.mousePressed(restart);
   startButtonR.style("text-align", "left");
 
@@ -115,7 +115,7 @@ function toPixelY(ny) {
 }
 function createOptionButton(label, yOffset, callback) {
   const btn = createButton(label);
-  btn.position(CANVAS_WIDTH + 70, CANVAS_HEIGHT / 2 + yOffset);
+  btn.parent("sim-controls");
   btn.mousePressed(callback);
   return btn;
 }

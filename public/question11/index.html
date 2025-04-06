@@ -3,6 +3,8 @@
 
 <head>
     <title>Questão 11</title>
+    <p id="user-info" style="text-align:right; font-style: italic; margin-bottom: 10px;"></p>
+
     <script src="/node_modules/p5/lib/p5.js"></script>
     <script src="./cars.js"></script>
     <script src="./sketch.js"></script>
@@ -27,12 +29,28 @@
                 .catch(error => console.error('Error:', error));
         }
     </script>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <meta charset="utf-8" />
+        <script>
+        fetch('/currentUser')
+            .then(response => {
+            if (!response.ok) throw new Error("Usuário não autenticado");
+            return response.json();
+            })
+            .then(data => {
+            document.getElementById('user-info').textContent = `Usuário: ${data.username}`;
+            })
+            .catch(err => {
+            document.getElementById('user-info').textContent = 'Usuário não autenticado';
+            });
+    </script>
+<link rel="stylesheet" type="text/css" href="style.css">
+        <meta charset="utf-8" />
 </head>
 
 <body>
-    <main></main>
+    <div id="sim-wrapper">
+        <main></main>
+        <div id="sim-controls"></div>
+    </div>
     <div class="enunciado">
         <img src="../figs/q_08.jpeg" alt="Description of the image">
         <p>
@@ -52,20 +70,20 @@
         </p>
     </div>
     <form id="questionForm">
-        <input type="radio" id="option1" name="answer" value="A">
-        <label for="option1">A) uma força descendente da gravidade.</label><br>
-        <input type="radio" id="option2" name="answer" value="B">
-        <label for="option2">B) uma força descendente da gravidade e uma força horizontal na direção do
+         <label for="option1">
+        <input type="radio" id="option1" name="answer" value="A">A) uma força descendente da gravidade.</label><br>
+         <label for="option2">
+        <input type="radio" id="option2" name="answer" value="B">B) uma força descendente da gravidade e uma força horizontal na direção do
             movimento.</label><br>
-        <input type="radio" id="option3" name="answer" value="C">
-        <label for="option3">C) uma força descendente da gravidade, uma força
+         <label for="option3">
+        <input type="radio" id="option3" name="answer" value="C">C) uma força descendente da gravidade, uma força
             ascendente exercida pela superfície e uma força horizontal na direção do
             movimento.</label><br>
-        <input type="radio" id="option4" name="answer" value="D">
-        <label for="option4">D) uma força descendente da gravidade e uma força
+         <label for="option4">
+        <input type="radio" id="option4" name="answer" value="D">D) uma força descendente da gravidade e uma força
             ascendente exercida pela superfície.</label><br>
-        <input type="radio" id="option5" name="answer" value="E">
-        <label for="option5">E) nenhuma. (Nenhuma força age sobre o disco de hóquei.)</label><br>
+         <label for="option5">
+        <input type="radio" id="option5" name="answer" value="E">E) nenhuma. (Nenhuma força age sobre o disco de hóquei.)</label><br>
         <button type="button" onclick="submitAnswer()">Enviar</button>
     </form>
 </body>

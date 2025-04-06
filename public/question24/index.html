@@ -3,6 +3,8 @@
 
 <head>
     <title>Questão 24</title>
+    <p id="user-info" style="text-align:right; font-style: italic; margin-bottom: 10px;"></p>
+
     <script src="/node_modules/p5/lib/p5.js"></script>
     <script src="./cars.js"></script>
     <script src="./sketch.js"></script>
@@ -27,12 +29,28 @@
                 .catch(error => console.error('Error:', error));
         }
     </script>
-    <link rel="stylesheet" type="text/css" href="style.css">
+        <script>
+        fetch('/currentUser')
+            .then(response => {
+            if (!response.ok) throw new Error("Usuário não autenticado");
+            return response.json();
+            })
+            .then(data => {
+            document.getElementById('user-info').textContent = `Usuário: ${data.username}`;
+            })
+            .catch(err => {
+            document.getElementById('user-info').textContent = 'Usuário não autenticado';
+            });
+    </script>
+<link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
 </head>
 
 <body>
-    <main></main>
+    <div id="sim-wrapper">
+        <main></main>
+        <div id="sim-controls"></div>
+</div>
     <div class="enunciado">
         <img src="../figs/q_21_24.jpeg" alt="description">
         <p>
@@ -52,16 +70,16 @@
         <p>Além da posição R, a velocidade da nave espacial :</p>
     </div>
     <form id="questionForm">
-        <input type="radio" id="option1" name="answer" value="A">
-        <label for="option1">A) é constante.</label><br>
-        <input type="radio" id="option2" name="answer" value="B">
-        <label for="option2">B) aumenta continuamente.</label><br>
-        <input type="radio" id="option3" name="answer" value="C">
-        <label for="option3">C) diminui continuamente.</label><br>
-        <input type="radio" id="option4" name="answer" value="D">
-        <label for="option4">D) aumenta por um tempo e permanece constante depois.</label><br>
-        <input type="radio" id="option5" name="answer" value="E">
-        <label for="option5">E) é constante por um tempo e diminui depois.</label><br>
+         <label for="option1">
+        <input type="radio" id="option1" name="answer" value="A">A) é constante.</label><br>
+         <label for="option2">
+        <input type="radio" id="option2" name="answer" value="B">B) aumenta continuamente.</label><br>
+         <label for="option3">
+        <input type="radio" id="option3" name="answer" value="C">C) diminui continuamente.</label><br>
+         <label for="option4">
+        <input type="radio" id="option4" name="answer" value="D">D) aumenta por um tempo e permanece constante depois.</label><br>
+         <label for="option5">
+        <input type="radio" id="option5" name="answer" value="E">E) é constante por um tempo e diminui depois.</label><br>
         <button type="button" onclick="submitAnswer()">Enviar</button>
     </form>
 </body>

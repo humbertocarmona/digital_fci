@@ -25,15 +25,33 @@ function setup() {
 
   s = 15;
   // Create option buttons using helper function
-  itemAButton = createOptionButton("Opção A", -60, option_A);
-  itemBButton = createOptionButton("Opção B", -30, option_B);
-  itemCButton = createOptionButton("Opção C", 0, option_C);
-  itemDButton = createOptionButton("Opção D", 30, option_D);
-  itemEButton = createOptionButton("Opção E", 60, option_E);
+  // Criando o botão ITEM A
+  itemAButton = createButton("Opção A");
+  itemAButton.parent("sim-controls");
+  itemAButton.mousePressed(option_A);
 
-  // Create restart button
+  // Criando o botão ITEM B
+  itemBButton = createButton("Opção B");
+  itemBButton.parent("sim-controls");
+  itemBButton.mousePressed(option_B);
+
+  // Criando o botão ITEM C
+  itemCButton = createButton("Opção C");
+  itemCButton.parent("sim-controls");
+  itemCButton.mousePressed(option_C);
+
+  // Criando o botão ITEM D
+  itemDButton = createButton("Opção D");
+  itemDButton.parent("sim-controls");
+  itemDButton.mousePressed(option_D);
+
+  // Criando o botão ITEM D
+  itemEButton = createButton("Opção E");
+  itemEButton.parent("sim-controls");
+  itemEButton.mousePressed(option_E);
+
   startButtonR = createButton("Reiniciar");
-  startButtonR.position(CANVAS_WIDTH + 70, CANVAS_HEIGHT / 2 + 90);
+  startButtonR.parent("sim-controls");
   startButtonR.mousePressed(restart);
   startButtonR.style("text-align", "left");
 
