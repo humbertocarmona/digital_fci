@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Questão 1</title>
+    <script src="/node_modules/p5/lib/p5.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <main>
+      <!-- Canvas is created by sketch.js script -->
+    </main>
+<div class="instructions">
+        This is question 1
+        <p>Escolha a resposta correta:</p>
+        <form id="questionForm">
+            <input type="radio" id="option1" name="answer" value="A">
+            <label for="option1">Option A</label><br>
+            <input type="radio" id="option2" name="answer" value="B">
+            <label for="option2">Option B</label><br>
+            <input type="radio" id="option3" name="answer" value="C">
+            <label for="option3">Option C</label><br>
+            <input type="radio" id="option4" name="answer" value="D">
+            <label for="option4">Option D</label><br>
+            <input type="radio" id="option5" name="answer" value="E">
+            <label for="option5">Option E</label><br>
+            <button type="button" onclick="submitAnswer()">Submit</button>
+        </form>
+    </div>
+    <script src="./sketch.js"></script>
+    <script>
+      function submitAnswer() {
+        const form = document.getElementById("questionForm");
+        const formData = new FormData(form);
+        const answer = formData.get("answer");
+
+        fetch("/submitAnswer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ questionNumber: 1, answer }), // Removed username from here
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            alert(data);
+            window.location.href = "/question02";
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>

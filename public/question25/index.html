@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Questão 25</title>
+    <script src="/node_modules/p5/lib/p5.js"></script>
+    <script src="./cars.js"></script>
+    <script src="./sketch.js"></script>
+    <script>
+        function submitAnswer() {
+            const form = document.getElementById('questionForm');
+            const formData = new FormData(form);
+            const answer = formData.get('answer');
+
+            fetch('/submitAnswer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ questionNumber: 25, answer }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    window.location.href = '/question26';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <main></main>
+    <div class="enunciado">
+        Uma mulher exerce uma força horizontal constante em uma grande caixa.
+        Como resultado, a caixa se move em um piso horizontal com uma velocidade constante v0. A
+        força horizontal constante aplicada pela mulher
+    </div>
+    <form id="questionForm">
+        <input type="radio" id="option1" name="answer" value="A">
+        <label for="option1">A) tem a mesma magnitude que o peso da caixa.</label><br>
+        <input type="radio" id="option2" name="answer" value="B">
+        <label for="option2">B) é maior do que o peso da caixa.</label><br>
+        <input type="radio" id="option3" name="answer" value="C">
+        <label for="option3">C) tem a mesma magnitude que a força total que se opõe ao movimento da caixa.</label><br>
+        <input type="radio" id="option4" name="answer" value="D">
+        <label for="option4">D) é maior do que a força total que se opõe ao movimento da caixa. </label><br>
+        <input type="radio" id="option5" name="answer" value="E">
+        <label for="option5">E) é maior do que o peso da caixa ou a força total que se opõe ao seu
+            movimento.</label><br>
+        <button type="button" onclick="submitAnswer()">Enviar</button>
+    </form>
+</body>
+
+</html>

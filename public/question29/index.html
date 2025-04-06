@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Questão 29</title>
+    <script src="/node_modules/p5/lib/p5.js"></script>
+    <script src="./cars.js"></script>
+    <script src="./sketch.js"></script>
+    <script>
+        function submitAnswer() {
+            const form = document.getElementById('questionForm');
+            const formData = new FormData(form);
+            const answer = formData.get('answer');
+
+            fetch('/submitAnswer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ questionNumber: 29, answer }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    window.location.href = '/question30';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <main></main>
+    <div class="enunciado">
+        Uma cadeira de escritório vazia está em repouso no chão. Considere as
+        seguintes forças:
+        <ul>
+            <li> A. uma força descendente da gravidade. </li>
+            <li> B. uma força ascendente exercida pelo chão. </li>
+            <li> C. uma força líquida descendente exercida pelo ar. </li>
+        </ul>
+        Quais das forças estão agindo na cadeira de escritório?
+
+    </div>
+    <form id="questionForm">
+        <input type="radio" id="option1" name="answer" value="A">
+        <label for="option1">A) A apenas</label><br>
+        <input type="radio" id="option2" name="answer" value="B">
+        <label for="option2">B) A e B.</label><br>
+        <input type="radio" id="option3" name="answer" value="C">
+        <label for="option3">C) B e C.</label><br>
+        <input type="radio" id="option4" name="answer" value="D">
+        <label for="option4">D) A, B e C. </label><br>
+        <input type="radio" id="option5" name="answer" value="E">
+        <label for="option5">E) Nenhuma das forças. (como a cadeira está em repouso, não há forças agindo sobre
+            ela).</label><br>
+        <button type="button" onclick="submitAnswer()">Enviar</button>
+    </form>
+</body>
+
+</html>

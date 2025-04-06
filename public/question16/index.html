@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Questão 16</title>
+    <script src="/node_modules/p5/lib/p5.js"></script>
+    <script src="./cars.js"></script>
+    <script src="./sketch.js"></script>
+    <script>
+        function submitAnswer() {
+            const form = document.getElementById('questionForm');
+            const formData = new FormData(form);
+            const answer = formData.get('answer');
+
+            fetch('/submitAnswer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ questionNumber: 16, answer }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    window.location.href = '/question17';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <main></main>
+    <div class="enunciado">
+        <p>
+            Um caminhão grande quebra na estrada e recebe um empurrão de volta para
+            a cidade por um carro compacto pequeno, como mostrado na figura abaixo
+        </p>
+        <img src="../figs/q_15_16.jpeg" alt="description">
+        <p>
+            Após o carro alcançar a velocidade constante de cruzeiro na qual o
+            motorista deseja empurrar o caminhão,
+        </p>
+    </div>
+    <form id="questionForm">
+        <input type="radio" id="option1" name="answer" value="A">
+        <label for="option1">A) A quantidade de força com que o carro empurra o caminhão é igual à com que o caminhão
+            empurra de volta o carro.</label><br>
+        <input type="radio" id="option2" name="answer" value="B">
+        <label for="option2">B) A quantidade de força com que o carro empurra o caminhão é menor do que a com que o
+            caminhão empurra de volta o carro.</label><br>
+        <input type="radio" id="option3" name="answer" value="C">
+        <label for="option3">C) A quantidade de força com que o carro empurra o caminhão é maior do que a com que o
+            caminhão empurra de volta o carro.</label><br>
+        <input type="radio" id="option4" name="answer" value="D">
+        <label for="option4">D) O motor do carro está funcionando, então o carro empurra o caminhão, mas o motor do
+            caminhão não está funcionando, então o caminhão não pode empurrar de volta o carro. O caminhão é empurrado
+            para a frente simplesmente porque está no caminho do carro.</label><br>
+        <input type="radio" id="option5" name="answer" value="E">
+        <label for="option5">E) Nem o carro nem o caminhão exercem qualquer força um sobre o outro. O caminhão é
+            empurrado para a frente simplesmente porque está no caminho do carro.</label><br>
+        <button type="button" onclick="submitAnswer()">Enviar</button>
+    </form>
+</body>
+
+</html>

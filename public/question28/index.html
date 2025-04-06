@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Questão 28</title>
+    <script src="/node_modules/p5/lib/p5.js"></script>
+    <script src="./cars.js"></script>
+    <script src="./sketch.js"></script>
+    <script>
+        function submitAnswer() {
+            const form = document.getElementById('questionForm');
+            const formData = new FormData(form);
+            const answer = formData.get('answer');
+
+            fetch('/submitAnswer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ questionNumber: 28, answer }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    window.location.href = '/question29';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <main></main>
+    <div class="enunciado">
+        <img src="../figs/q_28.jpeg" alt="description">
+        <p>
+            Na figura a seguir, o estudante A tem uma massa de 75 kg e o
+            estudante B tem uma massa de 57 kg. Eles estão sentados em cadeiras
+            de escritório idênticas, de frente um para o outro. O estudante A
+            colocou seus pés descalços nos joelhos do estudante B, como
+            mostrado.
+        </p>
+        <p>
+            O estudante A então de repente empurra para fora com os pés, fazendo
+            com que ambas as cadeiras se movam. Durante o empurrão e enquanto os
+            estudantes ainda estão tocando um ao outro,
+        </p>
+    </div>
+    <form id="questionForm">
+        <input type="radio" id="option1" name="answer" value="A">
+        <label for="option1">A) nenhum dos estudantes exerce uma força sobre o outro.</label><br>
+        <input type="radio" id="option2" name="answer" value="B">
+        <label for="option2">B) o estudante A exerce uma força sobre o estudante B, mas B não exerce nenhuma
+            força sobre A.</label><br>
+        <input type="radio" id="option3" name="answer" value="C">
+        <label for="option3">C) cada estudante exerce uma força sobre o outro, mas B exerce a força maior </label><br>
+        <input type="radio" id="option4" name="answer" value="D">
+        <label for="option4">D) cada estudante exerce uma força sobre o outro, mas A exerce a força maior.</label><br>
+        <input type="radio" id="option5" name="answer" value="E">
+        <label for="option5">E) cada estudante exerce a mesma quantidade de força sobre o outro.</label><br>
+        <button type="button" onclick="submitAnswer()">Enviar</button>
+    </form>
+</body>
+
+</html>

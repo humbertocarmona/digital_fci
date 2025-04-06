@@ -1,0 +1,57 @@
+body {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  margin: 0;
+  padding: 0;
+  background-color: beige;
+}
+
+.center {
+  text-align: center;
+  color: beige;
+}
+
+
+
+
+
+
+h1 {
+  color: black;
+  text-align: center;
+  font-family: arial;
+  font-size: 30px;
+}
+
+#para1 {
+  text-align: center;
+  font-family: arial;
+  color: red;
+}
+
+a {
+  color: black;
+  text-align: center;
+  font-family: arial;
+  font-size: 20px;
+}
+
+main {
+  margin-bottom: 20px;
+  /* Add margin to separate the canvas from other elements */
+}
+
+.instructions {
+  margin-top: 20px;
+  /* Add margin to separate the instructions from the canvas */
+  text-align: center;
+  /* Center align the text */
+}
+
+form {
+  margin-top: 20px;
+  /* Add margin to separate the form from other elements */
+  text-align: left;
+  /* Align text to the left */
+}

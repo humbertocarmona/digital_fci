@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Questão 3</title>
+    <script src="/node_modules/p5/lib/p5.js"></script>
+    <script src="./ball.js"></script>
+    <script src="./sketch.js"></script>
+    <script>
+        function submitAnswer() {
+            const form = document.getElementById('questionForm');
+            const formData = new FormData(form);
+            const answer = formData.get('answer');
+
+            fetch('/submitAnswer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ questionNumber: 3, answer }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    window.location.href = '/question04';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <main></main>
+    <div class="enunciado">
+        Uma pedra solta do telhado de um prédio de um único andar até a superfície da Terra:
+    </div>
+    <form id="questionForm">
+        <input type="radio" id="option1" name="answer" value="A">
+        <label for="option1">A) atinge uma velocidade máxima logo após ser solta e depois cai a uma velocidade
+            constante.</label><br>
+        <input type="radio" id="option2" name="answer" value="B">
+        <label for="option2">B) acelera à medida que cai porque a atração gravitacional fica consideravelmente mais
+            forte à medida que a pedra se aproxima da Terra.</label><br>
+        <input type="radio" id="option3" name="answer" value="C">
+        <label for="option3">C) acelera devido a uma força quase constante da gravidade agindo sobre ela</label><br>
+        <input type="radio" id="option4" name="answer" value="D">
+        <label for="option4">D) cai devido à tendência natural de todos os objetos descansarem na superfície da
+            Terra.</label><br>
+        <input type="radio" id="option5" name="answer" value="E">
+        <label for="option5">E) cai devido aos efeitos combinados da força da gravidade empurrando-a para baixo e da
+            força do ar empurrando-a para baixo.</label><br>
+        <button type="button" onclick="submitAnswer()">Enviar</button>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Questão 2</title>
+    <script src="/node_modules/p5/lib/p5.js"></script>
+    <script src="./sketch.js"></script>
+    <script>
+        function submitAnswer() {
+            const form = document.getElementById('questionForm');
+            const formData = new FormData(form);
+            const answer = formData.get('answer');
+
+            fetch('/submitAnswer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ questionNumber: 2, answer }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    window.location.href = '/question03';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <main></main>
+    <div class="enunciado">
+        Duas bolas de metal têm o mesmo tamanho, mas uma pesa o dobro da outra,
+        elas rolam de uma mesa horizontal com a mesma velocidade (experimente a simulação).
+        Nesta situação:
+    </div>
+    <form id="questionForm">
+        <input type="radio" id="option1" name="answer" value="A">
+        <label for="option1">A) Ambas as bolas atingem o chão aproximadamente à mesma distância horizontal da base da
+            mesa.</label><br>
+        <input type="radio" id="option2" name="answer" value="B">
+        <label for="option2">B) Bola B atinge o chão aproximadamente à metade da distância horizontal da bola
+            A</label><br>
+        <input type="radio" id="option3" name="answer" value="C">
+        <label for="option3">C) Bola A atinge o chão a cerca da metade da distância horizontal da bola B/label><br>
+            <input type="radio" id="option4" name="answer" value="D">
+            <label for="option4">D) Bola B atinge o chão consideravelmente mais perto da base da mesa do que a bola
+                A.</label><br>
+            <input type="radio" id="option5" name="answer" value="E">
+            <label for="option5">E) Bola A atinge o chão consideravelmente mais perto da base da mesa do que a bola
+                B.</label><br>
+            <button type="button" onclick="submitAnswer()">Enviar</button>
+    </form>
+</body>
+
+</html>
