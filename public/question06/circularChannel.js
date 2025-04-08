@@ -58,6 +58,14 @@ class circularChannel {
     return createVector(x, y, z);
   }
 
+  positionAtPhi_(phi) {
+    let r = this.radius; // centerline radius
+    let x = this.center.x + r * Math.cos(phi);
+    let y = this.center.y + r * Math.sin(phi);
+    let z = this.center.z;
+    return createVector(x, y, z);
+  }
+
   drawDisk(phi = this.phi_disk, height = 10, colorVal = [255, 0, 0]) {
     const pos = this.positionAtPhi(phi);
     push();
@@ -69,6 +77,19 @@ class circularChannel {
     cylinder(0.9 * this.channelWidth / 2, height);
     pop();
   }
+
+  drawDiskAt(x,y,z, height = 10, colorVal = [200, 0, 0]) {
+    push();
+    translate(x, y, z + height / 2); // z offset to sit on table
+    rotateX(HALF_PI); // flat in XY plane
+    fill(colorVal);
+    stroke(0);
+    strokeWeight(0.5)
+    cylinder(0.9 * this.channelWidth / 2, height);
+    pop();
+  }
+
+  
 
   drawTabletop(sizeX = 320, sizeY = 320, colorVal = 230) {
     push();

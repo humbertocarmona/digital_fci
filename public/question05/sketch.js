@@ -10,14 +10,14 @@ let itemAButton,
   startButtonR;
 
 let isRunning = false;
+let topView = false;
 let update;
 
 let t = 0;
 let phi0, phi1, phiQ, phi;
 let channelWidth, radius;
 let O, P, Q, R;
-let cameraState;
-let lastCameraState;
+let lastCameraState, camTilted, camTopDown;
 let cam;
 let myFont;
 function preload() {
@@ -39,8 +39,8 @@ function setup() {
   textFont(myFont);
   textSize(36);
 
-  cameraState = {
-    eye : createVector(-0.2969671749602142, 565.1867804889768, 412.993722677479),
+  camTilted = {
+    eye: createVector(0., 600, 400),
     center: createVector(0, 0, 0),
     up: createVector(0, 1, 0),
     fov: PI / 3,
@@ -48,8 +48,8 @@ function setup() {
     far: 1000,
     aspect: CANVAS_WIDTH / CANVAS_HEIGHT,
   };
-  
-  cameraState_top_down = {
+
+  camTopDown = {
     eye: createVector(0, 0, 700),
     center: createVector(0, 0, 0),
     up: createVector(0, 1, 0),
@@ -59,19 +59,24 @@ function setup() {
     aspect: CANVAS_WIDTH / CANVAS_HEIGHT,
   };
 
-  lastCameraState = cameraState;
   cam = createCamera(); // Get the current camera object
 
+  if (topView) {
+    lastCameraState = camTopDown;
+  } else {
+    lastCameraState = camTilted;
+  }
+
   camera(
-    cameraState.eye.x,
-    cameraState.eye.y,
-    cameraState.eye.z,
-    cameraState.center.x,
-    cameraState.center.y,
-    cameraState.center.z,
-    cameraState.up.x,
-    cameraState.up.y,
-    cameraState.up.z
+    lastCameraState.eye.x,
+    lastCameraState.eye.y,
+    lastCameraState.eye.z,
+    lastCameraState.center.x,
+    lastCameraState.center.y,
+    lastCameraState.center.z,
+    lastCameraState.up.x,
+    lastCameraState.up.y,
+    lastCameraState.up.z
   );
 
   O = createVector(0, 0, 0);
@@ -107,12 +112,42 @@ function setup() {
   itemEButton.parent("sim-controls");
   itemEButton.mousePressed(option_E);
 
-  startButtonR = createButton("Reiniciar");
-  startButtonR.parent("sim-controls");
-  startButtonR.mousePressed(restart);
-  startButtonR.style("text-align", "left");
+  // startButtonR = createButton("Reiniciar");
+  // startButtonR.parent("sim-controls");
+  // startButtonR.mousePressed(restart);
+  // startButtonR.style("text-align", "left");
 
-  update = restart;
+  startButtonT = createButton("vista superior");
+  startButtonT.parent("sim-controls");
+  startButtonT.mousePressed(applyTopView);
+  startButtonT.style("text-align", "left");
+
+  update = updateA;
+  phi = phi0 + 0.2;
+}
+
+function applyTopView() {
+  if (topView) {
+    lastCameraState = camTilted;
+    topView = false;
+    startButtonT.html("vista superior ");
+  } else {
+    lastCameraState = camTopDown;
+    topView = true;
+    startButtonT.html("vista inclinada");
+  }
+
+  camera(
+    lastCameraState.eye.x,
+    lastCameraState.eye.y,
+    lastCameraState.eye.z,
+    lastCameraState.center.x,
+    lastCameraState.center.y,
+    lastCameraState.center.z,
+    lastCameraState.up.x,
+    lastCameraState.up.y,
+    lastCameraState.up.z
+  );
 }
 
 function draw() {
@@ -122,26 +157,20 @@ function draw() {
 
   myTrack.drawTabletop(); // ✅ tabletop from class
   myTrack.drawCircularTrack();
-
-  phi = lerp(phi0 + 0.2, phi1 - 0.2, constrain(t, 0, 1));
-
   myTrack.drawDisk(phi); // ✅ moving disk
   myTrack.drawLabeledPoints(); // 👈 This
 
-  let g = createVector(0, 0, -1); // gravity vector pointing down
-  let pQ = myTrack.positionAtPhi(phiQ);
-  let vQO = p5.Vector.sub(O, pQ); // vector from Q to O
-  vQO.normalize(); // Normalize the vector
-  vQO.mult(50); // Scale it to a length of 50
-
-  let c = vQO.cross(g); // c is (0, 0, 1)
-
-  drawArrow3D(pQ, c, "blue");
-
-  t = t + 0.01;
-  if (t >= 1) {
-    // t = 0;
+  update(t); // Update the scene based on the selected option
+  if (t <=1) {
+    t = t + 0.01;
   }
+  // push();
+  // translate(-100, -100, 0);
+  // noLights();
+  // text(''+t, 0, 0); // label offset
+  // pop();
+
+  
 }
 
 // the camera looks from (width/2, height/2, (height/2) / tan(PI/6))
@@ -251,47 +280,146 @@ function drawGround() {
   rect(0, GROUND, CANVAS_WIDTH, CANVAS_HEIGHT - GROUND);
 }
 
-function updateA() {
+function updateA(t) {
+
+  if (isRunning) {
+    phi = lerp(phi0 + 0.2, phi1 - 0.2, constrain(t, 0, 1));
+
+    if (phi < phiQ) {
+      let pos_Q = myTrack.positionAtPhi(phiQ);
+      let g = createVector(0, 0.01, -1); // gravity vector pointing down
+      g.mult(50); // Scale it to a length of 50
+      drawArrow3D(pos_Q, g, "blue");
+    }
+  }
+
   redraw();
+
 }
 
 function updateB() {
-  redraw();
+  if (isRunning) {
+    phi = lerp(phi0 + 0.2, phi1 - 0.2, constrain(t, 0, 1));
+
+    if (phi < phiQ) {
+      let g = createVector(0, 0.01, -1); // gravity vector pointing down
+      let pos_Q = myTrack.positionAtPhi(phiQ);
+
+      let vQO = p5.Vector.sub(O, pos_Q); // vector from Q to O
+      vQO.normalize(); // Normalize the vector
+      vQO.mult(50); // Scale it to a length of 50
+      g.mult(50); // Scale it to a length of 50
+
+      drawArrow3D(pos_Q, g, "blue");
+      drawArrow3D(pos_Q, vQO, "red");
+    }
+    redraw();
+  }
 }
 
 function updateC() {
-  redraw();
+  if (isRunning) {
+    phi = lerp(phi0 + 0.2, phi1 - 0.2, constrain(t, 0, 1));
+
+    if (phi < phiQ) {
+      let g = createVector(0, 0.01, -1); // gravity vector pointing down
+      let pos_Q = myTrack.positionAtPhi(phiQ);
+
+      let vQO = p5.Vector.sub(O, pos_Q); // vector from Q to O
+      vQO.normalize(); // Normalize the vector
+      vQO.mult(50); // Scale it to a length of 50
+
+      let v = vQO.cross(g); // c is (0, 0, 1)
+
+      g.mult(50); // Scale it to a length of 50
+
+      drawArrow3D(pos_Q, g, "blue");
+      drawArrow3D(pos_Q, v, "green");
+    }
+    redraw();
+  }
 }
 
 function updateD() {
-  redraw();
+  if (isRunning) {
+    phi = lerp(phi0 + 0.2, phi1 - 0.2, constrain(t, 0, 1));
+
+    if (phi < phiQ) {
+      let g = createVector(0, 0.01, -1); // gravity vector pointing down
+      let pos_Q = myTrack.positionAtPhi(phiQ);
+
+      let vQO = p5.Vector.sub(O, pos_Q); // vector from Q to O
+      vQO.normalize(); // Normalize the vector
+      vQO.mult(50); // Scale it to a length of 50
+
+      let v = vQO.cross(g); // c is (0, 0, 1)
+
+      g.mult(50); // Scale it to a length of 50
+
+      drawArrow3D(pos_Q, g, "blue");
+      drawArrow3D(pos_Q, vQO, "red");
+      drawArrow3D(pos_Q, v, "green");
+    }
+    redraw();
+  }
 }
 
 function updateE() {
-  redraw();
-}
+  if (isRunning) {
+    phi = lerp(phi0 + 0.2, phi1 - 0.2, constrain(t, 0, 1));
+
+    if (phi < phiQ) {
+      let g = createVector(0, 0.01, -1); // gravity vector pointing down
+      let pos_Q = myTrack.positionAtPhi(phiQ);
+
+      let vQO = p5.Vector.sub(O, pos_Q); // vector from Q to O
+      vQO.normalize(); // Normalize the vector
+      vQO.mult(50); // Scale it to a length of 50
+
+      let v = vQO.cross(g); // c is (0, 0, 1)
+
+      g.mult(50); // Scale it to a length of 50
+      vQO.mult(-1); // Scale it to a length of 50
+
+      drawArrow3D(pos_Q, g, "blue");
+      drawArrow3D(pos_Q, vQO, "orange");
+      drawArrow3D(pos_Q, v, "green");
+    }
+    redraw();
+  }}
 // Option functions
 function option_A() {
+ if (t>1) {restart();}
+
   isRunning = !isRunning;
+
   update = updateA;
 }
 
 function option_B() {
+  if (t>1) {restart();}
+
   isRunning = !isRunning;
   update = updateB;
 }
 
 function option_C() {
+  if (t>1) {restart();}
+
   isRunning = !isRunning;
   update = updateC;
 }
 
 function option_D() {
+  if (t>1) {restart();}
+
   isRunning = !isRunning;
   update = updateD;
 }
 
 function option_E() {
+  if (t>1) {restart();}
+
   isRunning = !isRunning;
   update = updateE;
 }
@@ -299,6 +427,7 @@ function option_E() {
 function restart() {
   isRunning = false;
   t = 0;
+  phi = phi0 + 0.2;
   camera(
     lastCameraState.eye.x,
     lastCameraState.eye.y,
@@ -310,7 +439,17 @@ function restart() {
     lastCameraState.up.y,
     lastCameraState.up.z
   );
-  console.log(lastCameraState);
+  console.log(
+    lastCameraState.eye.x,
+    lastCameraState.eye.y,
+    lastCameraState.eye.z
+  );
+  console.log(
+    lastCameraState.center.x,
+    lastCameraState.center.y,
+    lastCameraState.center.z
+  );
+  console.log(lastCameraState.up.x, lastCameraState.up.y, lastCameraState.up.z);
 }
 
 function saveCameraState(cam) {
