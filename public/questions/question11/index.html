@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Questão 11</title>
+    <p id="user-info" style="text-align:right; font-style: italic; margin-bottom: 10px;"></p>
+
+    <script src="../../node_modules/p5/lib/p5.js"></script>
+    <script src="./cars.js"></script>
+    <script src="./sketch.js"></script>
+    <script>
+        function submitAnswer() {
+            const form = document.getElementById('questionForm');
+            const formData = new FormData(form);
+            const answer = formData.get('answer');
+
+            if (!answer) {
+                alert("Por favor escolha um item antes de enviar.");
+                return;
+            }
+            fetch('/submitAnswer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ questionNumber: 11, answer }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    if(data!=="ok"){
+                        alert(data);
+                    }
+                    window.location.href = '/questions/question12';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+        <script>
+        fetch('/currentUser')
+            .then(response => {
+            if (!response.ok) throw new Error("Usuário não autenticado");
+            return response.json();
+            })
+            .then(data => {
+            document.getElementById('user-info').textContent = `Usuário: ${data.username}`;
+            })
+            .catch(err => {
+            document.getElementById('user-info').textContent = 'Usuário não autenticado';
+            });
+    </script>
+<link rel="stylesheet" type="text/css" href="style.css">
+        <meta charset="utf-8" />
+</head>
+
+<body>
+    <div id="sim-wrapper">
+        <main></main>
+        <div id="sim-controls"></div>
+    </div>
+    <div class="enunciado">
+        <img src="../figs/q_08.jpeg" alt="Description of the image">
+        <p>
+            A figura mostra um disco de hóquei deslizando com velocidade constante
+            V0 em linha reta do ponto P ao ponto Q em uma superfície horizontal sem
+            atrito.
+        </p>
+
+        <p>As forças exercidas pelo ar são desprezíveis.</p>
+
+        <p>Você está olhando para o disco de cima.</p>
+
+        <p>
+            Ao longo do caminho sem atrito que você escolheu na questão 8, a(s)
+            principal(is) força(s) agindo no disco de
+            hóquei após receber o chute é(são):
+        </p>
+    </div>
+    <form id="questionForm">
+         <label for="option1">
+        <input type="radio" id="option1" name="answer" value="A">A) uma força descendente da gravidade.</label><br>
+         <label for="option2">
+        <input type="radio" id="option2" name="answer" value="B">B) uma força descendente da gravidade e uma força horizontal na direção do
+            movimento.</label><br>
+         <label for="option3">
+        <input type="radio" id="option3" name="answer" value="C">C) uma força descendente da gravidade, uma força
+            ascendente exercida pela superfície e uma força horizontal na direção do
+            movimento.</label><br>
+         <label for="option4">
+        <input type="radio" id="option4" name="answer" value="D">D) uma força descendente da gravidade e uma força
+            ascendente exercida pela superfície.</label><br>
+         <label for="option5">
+        <input type="radio" id="option5" name="answer" value="E">E) nenhuma. (Nenhuma força age sobre o disco de hóquei.)</label><br>
+        <button type="button" onclick="submitAnswer()">Enviar</button>
+    </form>
+</body>
+
+</html>

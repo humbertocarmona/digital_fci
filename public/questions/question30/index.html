@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Questão 30</title>
+    <p id="user-info" style="text-align:right; font-style: italic; margin-bottom: 10px;"></p>
+
+    <script src="../../node_modules/p5/lib/p5.js"></script>
+    <script src="./cars.js"></script>
+    <script src="./sketch.js"></script>
+    <script>
+        function submitAnswer() {
+            const form = document.getElementById('questionForm');
+            const formData = new FormData(form);
+            const answer = formData.get('answer');
+
+            if (!answer) {
+                alert("Por favor escolha um item antes de enviar.");
+                return;
+            }
+            fetch('/submitAnswer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ questionNumber: 30, answer }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    if(data!=="ok"){
+                        alert(data);
+                    }
+                    window.location.href = '/thankyou.html';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+        <script>
+        fetch('/currentUser')
+            .then(response => {
+            if (!response.ok) throw new Error("Usuário não autenticado");
+            return response.json();
+            })
+            .then(data => {
+            document.getElementById('user-info').textContent = `Usuário: ${data.username}`;
+            })
+            .catch(err => {
+            document.getElementById('user-info').textContent = 'Usuário não autenticado';
+            });
+    </script>
+<link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div id="sim-wrapper">
+        <main></main>
+        <div id="sim-controls"></div>
+</div>
+    <div class="enunciado">
+        Apesar de um vento muito forte, uma jogadora de tênis consegue bater em uma bola de tênis com sua raquete de
+        forma que a bola passe sobre a rede e caia na quadra de
+        sua adversária.
+        Considere as seguintes forças:
+        <ul>
+            <li>A. uma força descendente da gravidade. </li>
+            <li>B. uma força pelo "golpe". </li>
+            <li>C. uma força exercida pelo ar. </li>
+        </ul>
+    </div>
+    <form id="questionForm">
+         <label for="option1">
+        <input type="radio" id="option1" name="answer" value="A">A) A apenas</label><br>
+         <label for="option2">
+        <input type="radio" id="option2" name="answer" value="B">B) A e B </label><br>
+         <label for="option3">
+        <input type="radio" id="option3" name="answer" value="C">C) A e C </label><br>
+         <label for="option4">
+        <input type="radio" id="option4" name="answer" value="D">D) B e C </label><br>
+         <label for="option5">
+        <input type="radio" id="option5" name="answer" value="E">E) A, B e C</label><br>
+        <button type="button" onclick="submitAnswer()">Enviar</button>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Questão 5</title>
+    <p id="user-info" style="text-align:right; font-style: italic; margin-bottom: 10px;"></p>
+
+    <script src="../../node_modules/p5/lib/p5.js"></script>
+    <script src="./circularChannel.js"></script>
+    <script src="./sketch.js"></script>
+    <script>
+        function submitAnswer() {
+            const form = document.getElementById('questionForm');
+            const formData = new FormData(form);
+            const answer = formData.get('answer');
+
+            if (!answer) {
+                alert("Por favor escolha um item antes de enviar.");
+                return;
+            }
+            fetch('/submitAnswer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ questionNumber: 5, answer }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    if(data!=="ok"){
+                        alert(data);
+                    }
+                    window.location.href = '/questions/question06';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+    <script>
+        fetch('/currentUser')
+            .then(response => {
+            if (!response.ok) throw new Error("Usuário não autenticado");
+            return response.json();
+            })
+            .then(data => {
+            document.getElementById('user-info').textContent = `Usuário: ${data.username}`;
+            })
+            .catch(err => {
+            document.getElementById('user-info').textContent = 'Usuário não autenticado';
+            });
+    </script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div id="sim-wrapper">
+        <main></main>
+        <div id="sim-controls"></div>
+    </div>
+    <div class="enunciado">
+        <img src="../figs/q_05_06.jpeg" alt="Description of the image">
+        <p>A simulação mostra um canal sem atrito em forma de um segmento de um
+            círculo com seu centro em O.</p>
+        <p>O canal foi ancorado a uma mesa horizontal
+            sem atrito.
+        <p> Você está olhando para baixo na mesa. </p>
+        <p>As forças exercidas
+            pelo ar são negligenciáveis. </p>Uma bola é disparada em alta velocidade
+        para o canal em P e sai em R.</p>
+
+        <p> Considere as seguintes forças distintas:</p>
+        <ol>
+            <li>uma força descendente da gravidade. </li>
+            <li>uma força exercida pelo canal apontando de Q para 0. </li>
+            <li>uma força na direção do movimento. </li>
+            <li>uma força apontando de 0 para Q. </li>
+        </ol>
+        * Quais das forças acima estão agindo sobre a bola quando ela está
+        dentro do canal sem atrito na posição Q?
+    </div>
+    <form id="questionForm">
+        
+        <label for="option1">
+            <input type="radio" id="option1" name="answer" value="A">
+            A) Apenas 1.</label><br>
+        
+        <label for="option2">
+            <input type="radio" id="option2" name="answer" value="B">
+            B) 1 e 2.</label><br>
+        
+        <label for="option3">
+            <input type="radio" id="option3" name="answer" value="C">
+            C) 1 e 3.</label><br>
+        
+        <label for="option4">
+            <input type="radio" id="option4" name="answer" value="D">
+            D) 1, 2 e 3.</label><br>
+
+        
+        <label for="option5">
+            <input type="radio" id="option5" name="answer" value="E">
+            E) 1, 3 e 4.</label><br>
+        <button type="button" onclick="submitAnswer()">Enviar</button>
+    </form>
+</body>
+
+</html>

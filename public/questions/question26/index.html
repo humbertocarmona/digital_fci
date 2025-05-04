@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Questão 26</title>
+    <p id="user-info" style="text-align:right; font-style: italic; margin-bottom: 10px;"></p>
+
+    <script src="../../node_modules/p5/lib/p5.js"></script>
+    <script src="./cars.js"></script>
+    <script src="./sketch.js"></script>
+    <script>
+        function submitAnswer() {
+            const form = document.getElementById('questionForm');
+            const formData = new FormData(form);
+            const answer = formData.get('answer');
+
+            if (!answer) {
+                alert("Por favor escolha um item antes de enviar.");
+                return;
+            }
+            fetch('/submitAnswer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ questionNumber: 26, answer }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    if(data!=="ok"){
+                        alert(data);
+                    }
+                    window.location.href = '/questions/question27';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+        <script>
+        fetch('/currentUser')
+            .then(response => {
+            if (!response.ok) throw new Error("Usuário não autenticado");
+            return response.json();
+            })
+            .then(data => {
+            document.getElementById('user-info').textContent = `Usuário: ${data.username}`;
+            })
+            .catch(err => {
+            document.getElementById('user-info').textContent = 'Usuário não autenticado';
+            });
+    </script>
+<link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div id="sim-wrapper">
+        <main></main>
+        <div id="sim-controls"></div>
+</div>
+    <div class="enunciado">
+        Se a mulher da pergunta anterior dobrar a força horizontal constante que
+        ela exerce sobre a caixa para empurrá-la no mesmo piso horizontal, a
+        caixa então se move
+    </div>
+    <form id="questionForm">
+         <label for="option1">
+        <input type="radio" id="option1" name="answer" value="A">A) com uma velocidade constante que é o dobro da velocidade v0 da pergunta
+            anterior.</label><br>
+         <label for="option2">
+        <input type="radio" id="option2" name="answer" value="B">B) com uma velocidade constante que é maior do que a velocidade v0 da pergunta
+            anterior, mas não necessariamente o dobro.</label><br>
+         <label for="option3">
+        <input type="radio" id="option3" name="answer" value="C">C) por um tempo com uma velocidade que é constante e maior do que a velocidade v0 da
+            pergunta anterior, então com uma velocidade que aumenta depois.</label><br>
+         <label for="option4">
+        <input type="radio" id="option4" name="answer" value="D">D) por um tempo com uma velocidade crescente, depois com uma velocidade
+            constante.</label><br>
+         <label for="option5">
+        <input type="radio" id="option5" name="answer" value="E">E) com uma velocidade continuamente crescente.</label><br>
+        <button type="button" onclick="submitAnswer()">Enviar</button>
+    </form>
+</body>
+
+</html>

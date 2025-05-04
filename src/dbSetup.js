@@ -18,6 +18,7 @@ const createUsersTable = `
     class TEXT NOT NULL,
     city TEXT NOT NULL,
     state TEXT NOT NULL,
+    type TEXT NOT NULL,
     progress INTEGER NOT NULL DEFAULT 1
   );
 `;
@@ -86,7 +87,7 @@ const createItemsTable = `
 //    correct_item TEXT CHECK (correct_item IN ('TRUE', 'FALSE')) NOT NULL,
 
 // === Database Setup ===
-const db = new Database("fci_n.db");
+const db = new Database("db/database.db");
 db.pragma("journal_mode = WAL");
 
 db.exec(createUsersTable);
@@ -123,17 +124,17 @@ if (fs.existsSync(usersCsvPath)) {
     const insert = db.prepare(`
       INSERT INTO users (
         name, username, password, school, email, phone,
-        date_of_birth, class, city, state
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        date_of_birth, class, city, state, type
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const insertMany = db.transaction((rows) => {
       // Hash once before insert loop
-      const defaultPasswordPlain = "senha123";
+      const defaultPasswordPlain = "123";
       const defaultHashedPassword = bcrypt.hashSync(defaultPasswordPlain, 10);
 
       for (const row of rows) {
-        if (row.length === 9) {
+        if (row.length === 10) {
           insert.run([
             row[0], // name
             row[1], // username
@@ -145,6 +146,7 @@ if (fs.existsSync(usersCsvPath)) {
             row[6], // class
             row[7], // city
             row[8], // state
+            row[9], // type
           ]);
         } else {
           console.warn("Skipping malformed user row:", row);
@@ -160,7 +162,6 @@ if (fs.existsSync(usersCsvPath)) {
 } else {
   console.warn("CSV file 'users.csv' not found. Skipping user seeding.");
 }
-
 
 // === Load concepts.csv and seed table ===
 const csvPath = path.resolve("./src/csvs/concepts.csv");
@@ -282,31 +283,39 @@ if (fs.existsSync(schoolsCsvPath)) {
 }
 
 // === Load questions.csv and seed questions table ===
-const questionsCsvPath = path.resolve('./src/csvs/questions.csv');
+const questionsCsvPath = path.resolve("./src/csvs/questions.csv");
 
 if (fs.existsSync(questionsCsvPath)) {
   console.log("CSV file found at:", questionsCsvPath);
 
-  const csvData = fs.readFileSync(questionsCsvPath, 'utf-8').replace(/^\uFEFF/, '').trim();
-  const lines = csvData.split('\n');
-  const headers = lines[0].split(',').map(h => h.trim());
+  const csvData = fs
+    .readFileSync(questionsCsvPath, "utf-8")
+    .replace(/^\uFEFF/, "")
+    .trim();
+  const lines = csvData.split("\n");
+  const headers = lines[0].split(",").map((h) => h.trim());
 
-  const dataRows = lines.slice(1).map(line => {
-    const match = line.match(/^([^,]+),"(.*)",([^,]+),([^,]+)$/);
-    if (match) {
-      return [
-        match[1].trim(), // id_question
-        match[2].trim(), // enunciate (may contain HTML and commas)
-        match[3].trim(), // id_correct_item
-        match[4].trim(), // id_concept
-      ];
-    } else {
-      console.warn("Skipping malformed row:", line);
-      return null;
-    }
-  }).filter(row => row !== null);
+  const dataRows = lines
+    .slice(1)
+    .map((line) => {
+      const match = line.match(/^([^,]+),"(.*)",([^,]+),([^,]+)$/);
+      if (match) {
+        return [
+          match[1].trim(), // id_question
+          match[2].trim(), // enunciate (may contain HTML and commas)
+          match[3].trim(), // id_correct_item
+          match[4].trim(), // id_concept
+        ];
+      } else {
+        console.warn("Skipping malformed row:", line);
+        return null;
+      }
+    })
+    .filter((row) => row !== null);
 
-  const questionCount = db.prepare("SELECT COUNT(*) as count FROM questions").get().count;
+  const questionCount = db
+    .prepare("SELECT COUNT(*) as count FROM questions")
+    .get().count;
   console.log("Questions in table before insert:", questionCount);
 
   if (questionCount === 0) {
@@ -327,7 +336,9 @@ if (fs.existsSync(questionsCsvPath)) {
     console.log("Questions table already populated.");
   }
 } else {
-  console.warn("CSV file 'questions.csv' not found. Skipping questions seeding.");
+  console.warn(
+    "CSV file 'questions.csv' not found. Skipping questions seeding."
+  );
 }
 
 // === Load items.csv and seed items table ===
@@ -375,28 +386,36 @@ if (fs.existsSync(schoolsCsvPath)) {
 }
 
 // === Load items.csv and seed items table ===
-const itemsCsvPath = path.resolve('./src/csvs/items.csv');
+const itemsCsvPath = path.resolve("./src/csvs/items.csv");
 
 if (fs.existsSync(itemsCsvPath)) {
   console.log("CSV file found at:", itemsCsvPath);
 
-  const csvData = fs.readFileSync(itemsCsvPath, 'utf-8').replace(/^\uFEFF/, '').trim();
-  const lines = csvData.split('\n');
-  const headers = lines[0].split(',').map(h => h.trim());
+  const csvData = fs
+    .readFileSync(itemsCsvPath, "utf-8")
+    .replace(/^\uFEFF/, "")
+    .trim();
+  const lines = csvData.split("\n");
+  const headers = lines[0].split(",").map((h) => h.trim());
 
-  const dataRows = lines.slice(1).map(line => {
-    // const fields = line.split(',').map(field => field.trim());
-    const fields = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-    if (fields.length !== 6) {
-      console.log(fields);
-      console.log(fields.length);
-      console.warn("Skipping malformed row:", line);
-      return null;
-    }
-    return fields;
-  }).filter(row => row !== null);
+  const dataRows = lines
+    .slice(1)
+    .map((line) => {
+      // const fields = line.split(',').map(field => field.trim());
+      const fields = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+      if (fields.length !== 6) {
+        console.log(fields);
+        console.log(fields.length);
+        console.warn("Skipping malformed row:", line);
+        return null;
+      }
+      return fields;
+    })
+    .filter((row) => row !== null);
 
-  const itemCount = db.prepare("SELECT COUNT(*) as count FROM items").get().count;
+  const itemCount = db
+    .prepare("SELECT COUNT(*) as count FROM items")
+    .get().count;
   console.log("Items in table before insert:", itemCount);
 
   if (itemCount === 0) {
@@ -410,12 +429,12 @@ if (fs.existsSync(itemsCsvPath)) {
     const insertMany = db.transaction((rows) => {
       for (const row of rows) {
         insert.run([
-          row[0],                        // id_item
-          row[1],                        // id_question
-          row[2],                        // enunciate
-          row[3] || null,                // id_concept
-          row[4] || null,                // id_misconception
-          row[5].toUpperCase()           // correct_item (e.g. TRUE/FALSE)
+          row[0], // id_item
+          row[1], // id_question
+          row[2], // enunciate
+          row[3] || null, // id_concept
+          row[4] || null, // id_misconception
+          row[5].toUpperCase(), // correct_item (e.g. TRUE/FALSE)
         ]);
       }
     });

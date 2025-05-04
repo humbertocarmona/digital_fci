@@ -4,8 +4,8 @@ import Database from "better-sqlite3";
 // Import bcrypt for secure password hashing
 import bcrypt from "bcrypt";
 
-// Open (or create) the SQLite database file named 'fci_n.db'
-const db = new Database("fci_n.db");
+// Open (or create) the SQLite database file named 'database.db'
+const db = new Database("db/database.db");
 
 /**
  * Adds a new user to the database.
@@ -21,6 +21,7 @@ const db = new Database("fci_n.db");
  * @param {string} turma - The user's class or group
  * @param {string} city - The city where the user is located
  * @param {string} state - The state where the user is located
+ * @param {string} tyoe - student or teacher
  */
 export function addUser(
   name,
@@ -32,15 +33,16 @@ export function addUser(
   date_of_birth,
   turma,
   city,
-  state
+  state,
+  type
 ) {
   const hashedPassword = bcrypt.hashSync(password, 10); // Hash the password with 10 salt rounds
   const stmt = db.prepare(`
     INSERT INTO users (
       name, username, password, school,
       email, phone, date_of_birth, class,
-      city, state
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      city, state, type
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   stmt.run(
     name,
@@ -52,7 +54,8 @@ export function addUser(
     date_of_birth,
     turma,
     city,
-    state
+    state,
+    type
   );
 }
 

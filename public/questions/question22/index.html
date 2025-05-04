@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Questão 22</title>
+    <p id="user-info" style="text-align:right; font-style: italic; margin-bottom: 10px;"></p>
+
+    <script src="../../node_modules/p5/lib/p5.js"></script>
+    <script src="./cars.js"></script>
+    <script src="./sketch.js"></script>
+    <script>
+        function submitAnswer() {
+            const form = document.getElementById('questionForm');
+            const formData = new FormData(form);
+            const answer = formData.get('answer');
+
+            if (!answer) {
+                alert("Por favor escolha um item antes de enviar.");
+                return;
+            }
+            fetch('/submitAnswer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ questionNumber: 22, answer }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    if(data!=="ok"){
+                        alert(data);
+                    }
+                    window.location.href = '/questions/question23';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+        <script>
+        fetch('/currentUser')
+            .then(response => {
+            if (!response.ok) throw new Error("Usuário não autenticado");
+            return response.json();
+            })
+            .then(data => {
+            document.getElementById('user-info').textContent = `Usuário: ${data.username}`;
+            })
+            .catch(err => {
+            document.getElementById('user-info').textContent = 'Usuário não autenticado';
+            });
+    </script>
+<link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div id="sim-wrapper">
+        <main></main>
+        <div id="sim-controls"></div>
+</div>
+    <div class="enunciado">
+        <img src="../figs/q_21_24.jpeg" alt="description">
+        <p>
+            Uma nave espacial deriva lateralmente no espaço sideral do ponto P ao
+            ponto Q, como mostrado abaixo.
+        </p> 
+        <p>A nave espacial não está sujeita a forças externas.</p> 
+        <p>
+            Começando na posição
+            Q, o motor da nave espacial é ligado e produz um impulso constante
+            (força na nave espacial) perpendicular à linha PQ.
+        </p> 
+        <p>
+            O impulso constante é
+            mantido até que a nave espacial alcance um ponto R no espaço.
+        </p>
+        <p>
+            Conforme a nave espacial se move do ponto Q para o ponto R, sua 
+            velocidade:
+        </p> 
+    </div>
+    <form id="questionForm">
+         <label for="option1">
+        <input type="radio" id="option1" name="answer" value="A">A) é constante.</label><br>
+         <label for="option2">
+        <input type="radio" id="option2" name="answer" value="B">B) aumenta continuamente.</label><br>
+         <label for="option3">
+        <input type="radio" id="option3" name="answer" value="C">C) diminui continuamente. </label><br>
+         <label for="option4">
+        <input type="radio" id="option4" name="answer" value="D">D) aumenta por um tempo e permanece constante depois.</label><br>
+         <label for="option5">
+        <input type="radio" id="option5" name="answer" value="E">E) é constante por um tempo e diminui depois.</label><br>
+        <button type="button" onclick="submitAnswer()">Enviar</button>
+    </form>
+</body>
+
+</html>
