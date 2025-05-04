@@ -1,0 +1,121 @@
+﻿id_item,id_question,enunciate,id_concept,id_misconception,correct_item
+1A,1,"aproximadamente a metade do tempo para a bola mais pesada em comparação com a mais leve.",TF7,G3,FALSE
+1B,1,"aproximadamente a metade do tempo para a bola mais leve em comparação com a mais pesada.",TF7,G2,FALSE
+1D,1,"consideravelmente menor para a bola mais pesada, mas não necessariamente a metade do tempo.",TF7,G2,FALSE
+1E,1,"consideravelmente menor para a bola mais leve, mas não necessariamente a metade do tempo.",TF7,G2,FALSE
+2B,2,"A bola mais pesada atinge o chão a cerca da metade da distância horizontal da base da mesa em comparação com a bola mais leve.",TF7,G3,FALSE
+2C,2,"A bola mais leve atinge o chão a cerca da metade da distância horizontal da base da mesa em comparação com a bola mais pesada.",TF7,G2,FALSE
+2D,2,"A bola mais pesada atinge o chão consideravelmente mais perto da base da mesa do que a bola mais leve, mas não necessariamente a metade da distância horizontal.",TF7,G3,FALSE
+2E,2,"A bola mais leve atinge o chão consideravelmente mais perto da base da mesa do que a bola mais pesada, mas não necessariamente a metade da distância horizontal.",TF7,G2,FALSE
+3B,3,"Acelera à medida que cai porque a atração gravitacional fica consideravelmente mais forte à medida que a pedra se aproxima da Terra.",TF6,AF5,FALSE
+3A,3,"Atinge uma velocidade máxima logo após ser solta e depois cai a uma velocidade constante.",TF6,AF6,FALSE
+3E,3,"Cai devido aos efeitos combinados da força da gravidade empurrando-a para baixo e da força do ar empurrando-a para baixo.",TF6,G1,FALSE
+3D,3,"Cai devido à tendência natural de todos os objetos descansarem na superfície da Terra.",TF6,G2,FALSE
+4A,4,"O caminhão exerce uma quantidade maior de força sobre o carro do que o carro exerce sobre o caminhão.",TL1,AR1,FALSE
+4B,4,"O carro exerce uma quantidade maior de força sobre o caminhão do que o caminhão exerce sobre o carro.",TL1,CI1,FALSE
+4C,4,"Nenhum deles exerce uma força sobre o outro, o carro é esmagado simplesmente porque fica no caminho do caminhão.",TL1,OB,FALSE
+4D,4,"O caminhão exerce uma força sobre o carro, mas o carro não exerce uma força sobre o caminhão.",TL1,AR1,FALSE
+5A,5,"Apenas A.",PS2,AF1,FALSE
+5C,5,"Forças A e C.",PS2,AF1,FALSE
+5D,5,"Forças A, B e C.",PS2,AF3,FALSE
+5E,5,"Forças A, C e D.",PS2,CF,FALSE
+6A,6,"Trajetória 1" ,PL1,I5,FALSE
+6C,6,"Trajetória 3",PL1,CF,FALSE
+6D,6,"Trajetória 4",PL1,CI2,FALSE
+6E,6,"Trajetória 5",PL1,CF,FALSE
+7A,7,"Trajetória 1" ,PL1,I5,FALSE
+7C,7,"Trajetória 3",PL1,CF,FALSE
+7D,7,"Trajetória 4",PL1,I5,FALSE
+7E,7,"Trajetória 5",PL1,CF,FALSE
+8A,8,"Trajetória 1" ,SL1,CI3,FALSE
+8C,8,"Trajetória 3",SL1,I2,FALSE
+8D,8,"Trajetória 4",SL1,I4,FALSE
+8E,8,"Trajetória 5",SL1,I2,FALSE
+9A,9,"Igual à velocidade v0 que ele tinha antes de receber o chute.",C5,CI3,FALSE
+9B,9,"Igual à velocidade vk resultante do chute e independente da velocidade v0.",C5,CI3,FALSE
+9C,9,"Igual à soma aritmética das velocidades v0 e vk.",C5,K3,FALSE
+9D,9,"menor que qualquer uma das velocidades v0 ou vk.",C5,AF7,FALSE
+10B,10,"Aumenta continuamente.",PL3,I4,FALSE
+10C,10,"Diminui continuamente.",PL3,I3,FALSE
+10D,10,"Aumenta por um tempo e diminui depois.",PL3,I4,FALSE
+10E,10,"É constante por um tempo e diminui depois.",PL3,I4,FALSE
+11A,11,"Uma força descendente da gravidade.",PS2 ,OB,FALSE
+11B,11,"Uma força descendente da gravidade e uma força horizontal na direção do movimento.",PS2 ,OB,FALSE
+11C,11,"Uma força descendente da gravidade, uma força ascendente exercida pela superfície e uma força horizontal na direção do movimento.",PS2 ,I1,FALSE
+11E,11,"Nenhuma. (Nenhuma força age sobre o disco de hóquei.)",PS2 ,G2,FALSE
+12A,12,"Trajetória 1",TF8,CI2,FALSE
+12C,12,"Trajetória 3",TF8,I3,FALSE
+12D,12,"Trajetória 4",TF8,G5,FALSE
+12E,12,"Trajetória 5",TF8,G5,FALSE
+13A,13,"Uma força descendente da gravidade juntamente com uma força ascendente que diminui constantemente.",TF6,R3,FALSE
+13B,13,"Uma força ascendente que diminui constantemente desde o momento em que ela deixa a mão do menino até atingir seu ponto mais alto; na descida, há uma força descendente da gravidade que aumenta constantemente à medida que a bola se aproxima da Terra.",TF6,G4,FALSE
+13C,13,"Uma força descendente da gravidade quase constante juntamente com uma força ascendente que diminui constantemente até a bola atingir seu ponto mais alto; na descida, há apenas uma força descendente da gravidade quase constante.",TF6,G1,FALSE
+13E,13,"Nenhuma das anteriores. A bola cai de volta ao chão por causa de sua tendência natural de repousar na superfície da Terra.,TF6,G2,FALSE
+14A,14,"Trajetória 1" ,C3,R1,FALSE
+14B,14,"Trajetória 2",C3,R1,FALSE
+14C,14,"Trajetória 3",C3,CI2,FALSE
+14E,14,"Trajetória 5",C3,I3,FALSE
+15B,15,"A quantidade de força com que o carro empurra o caminhão é menor do que a com que o caminhão empurra de volta o carro.",TL2,AR1,FALSE
+15C,15,"A quantidade de força com que o carro empurra o caminhão é maior do que a com que o caminhão empurra de volta o carro.",TL2,AR2,FALSE
+15D,15,"O motor do carro está funcionando, então o carro empurra o caminhão, mas o motor do caminhão não está funcionando, então o caminhão não pode empurrar de volta o carro. O caminhão é empurrado para a frente simplesmente porque está no caminho do carro.",TL2,AF1,FALSE
+15E,15,"Nem o carro nem o caminhão exercem qualquer força um sobre o outro. O caminhão é empurrado para a frente simplesmente porque está no caminho do carro.",TL2,OB,FALSE
+16B,16,"A quantidade de força com que o carro empurra o caminhão é menor do que a com que o caminhão empurra de volta o carro.",TL2,AR2,FALSE
+16C,16,"A quantidade de força com que o carro empurra o caminhão é maior do que a com que o caminhão empurra de volta o carro.",TL2,AR2,FALSE
+16D,16,"O motor do carro está funcionando, então o carro empurra o caminhão, mas o motor do caminhão não está funcionando, então o caminhão não pode empurrar de volta o carro. O caminhão é empurrado para a frente simplesmente porque está no caminho do carro.",TL2,AF1,FALSE
+16E,16,"Nem o carro nem o caminhão exercem qualquer força um sobre o outro. O caminhão é empurrado para a frente simplesmente porque está no caminho do carro.",TL2,OB,FALSE
+17A,17,"A força para cima exercida pelo cabo é maior que a força para baixo da gravidade.",PL4,CI1,FALSE
+17C,17,"A força para cima exercida pelo cabo é menor que a força para baixo da gravidade.",PL4,CI1,FALSE
+17D,17,"A força para cima exercida pelo cabo é maior que a soma da força para baixo da gravidade e uma força para baixo devido ao ar.",PL4,AF1,FALSE
+17E,17,"Nenhuma das anteriores. (O elevador sobe porque o cabo está sendo encurtado, não porque uma força para cima é exercida no elevador pelo cabo).",PL4,G1,FALSE
+18A,18,"A apenas",TF8,G2,FALSE
+18C,18,"Forças A e C,"TF8,AF2,FALSE
+18D,18,"Forças A, B e C",TF8,CF,FALSE
+18E,18,"Forças A, C e D",TF8,CF,FALSE
+19A,19,"Não.",C1,K2,FALSE
+19B,19,"Sim, no instante 2.",C1,K1,FALSE
+19C,19,"Sim, no instante 5.",C1,K1,FALSE
+19D,19,"Sim, nos instantes 2 e 5.",C1,K1,FALSE
+20A,20,"A aceleração de A é maior do que a aceleração de B.",C2,K2,FALSE
+20B,20,"A aceleração de A é igual à aceleração de B. Ambas as acelerações são maiores que zero.",C2,K2,FALSE
+20C,20,"A aceleração de B é maior do que a aceleração de A.",C2,K2,FALSE
+20E,20,"Não há informações suficientes para responder à pergunta.",C2,K1,FALSE
+21A,21,"Trajetória 1",C3,I2,FALSE
+21B,21,"Trajetória 2",C3,CI3,FALSE
+21C,21,"Trajetória 3",C3,CI2,FALSE
+21D,21,"Trajetória 4",C3,I4,FALSE
+22A,22,"Constante.",C4,AF4,FALSE
+22C,22,"Diminuindo continuamente.",C4,AF7,FALSE
+22D,22,"Aumentando por um tempo e constante depois.",C4,AF6,FALSE
+22E,22,"Constante por um tempo e diminuindo depois.",C4,AF7,FALSE
+23A,23,"Trajetória 1",PL2,I2,FALSE
+23C,23,"Trajetória 3",PL2,CI3,FALSE
+23D,23,"Trajetória 4",PL2,I2,FALSE
+23E,23,"Trajetória 5",PL2,I2,FALSE
+24B,24,"aumentando continuamente.",PL3,I4,FALSE
+24C,24,"diminuindo continuamente.",PL3,I3,FALSE
+24D,24,"aumentando por um tempo e constante depois.",PL3,AF6,FALSE
+24E,24,"constante por um tempo e diminuindo depois.",PL3,I3,FALSE
+25A,25,"tem a mesma magnitude que o peso da caixa.",PL4,AF3,FALSE
+25B,25,"é maior do que o peso da caixa.",PL4,CI1,FALSE
+25D,25,"é maior do que a força total que se opõe ao movimento da caixa.",PL4,R3,FALSE
+25E,25,"é maior do que o peso da caixa ou a força total que se opõe ao seu movimento.",PL4,R3,FALSE
+26A,26,"com uma velocidade constante que é o dobro da velocidade v0 da pergunta anterior.",SL2,AF4,FALSE
+26B,26,"com uma velocidade constante que é maior do que a velocidade v0 da pergunta anterior, mas não necessariamente o dobro. ",SL2,R2,FALSE
+26C,26,"por um tempo com uma velocidade que é constante e maior do que a velocidade v0 da pergunta anterior, então com uma velocidade que aumenta depois.",SL2,R2,FALSE
+26D,26,"por um tempo com uma velocidade crescente, depois com uma velocidade constante.",SL2,R2,FALSE
+27A,27,"Para imediatamente.",TF3,R1,FALSE
+27B,27,"Continua se movendo com uma velocidade constante por um tempo e depois desacelera até parar.",TF3,I3,FALSE
+27D,27,"Continua com uma velocidade constante.",TF3,I1,FALSE
+27E,27,"Aumenta sua velocidade por um tempo e depois começa a desacelerar até parar.",TF3,I4,FALSE
+28A,28,"Nenhum dos estudantes exerce uma força sobre o outro.",TL1,I3,FALSE
+28B,28,"O estudante A exerce uma força sobre o estudante B, mas B não exerce nenhuma força sobre A.",TL1,I3,FALSE
+28C,28,"Cada estudante exerce uma força sobre o outro, mas B exerce a força maior.",TL1,I1,FALSE
+28D,28,"Cada estudante exerce uma força sobre o outro, mas A exerce a força maior.",TL1,I1,FALSE
+29A,29,"Força A apenas,TF6,OB,FALSE
+29C,29,"Forças B e C",TF6,G1,FALSE
+29D,29,"Forças A, B e C",TF6,G1,FALSE
+29E,29,"Nenhuma das forças. (Como a cadeira está em repouso, não há forças agindo sobre ela).",TF6,AF3,FALSE
+30A,30,"Força A apenas",TF6,AF1,FALSE
+30B,30,"Forças A e B",TF6,I1,FALSE
+30D,30,"Forças B e C",TF6,I1,FALSE
+30E,30,"Forças A, B e C",TF6,I1,FALSE

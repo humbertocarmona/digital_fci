@@ -1,0 +1,24 @@
+﻿id_concept,main_concept,specific_concept,id_main_concept
+C1,Cinemática,velocidade e  posição diferenciadas,C
+C2,Cinemática,Aceleração e velocidade  diferenciadas ,C
+C3,Cinemática,Aceleração constante implica orbita parabólica ,C
+C4,Cinemática,Aceleração constante implica variação da velocidade,C
+C5,Cinemática,Soma vetorial de velocidades,C
+PL1,Primeira lei,Sem força,PL
+PL2,Primeira lei,Direção da velocidade constante,PL
+PL3,Primeira lei,Velocidade escalar constante,PL
+PL4,Primeira lei,Com forças que se cancelam,PL
+SL1,Segunda Lei,Força impulsiva,SL
+SL2,Segunda Lei,Força constante implica aceleração constante,SL
+TL1,Terceira Lei,Para forças impulsivas,TL
+TL2,Terceira Lei,Para forças contínuas,TL
+PS1,Princípio da Superposição,Soma vetorial,PS
+PS2,Princípio da Superposição,Forças que se cancelam,PS
+TF1,Tipos de Força,Contato sólido passivo,TF
+TF2,Tipos de Força,Contato sólido impulsivo,TF
+TF3,Tipos de Força,Contato sólido: Atrito se opõe ao movimento,TF
+TF4,Tipos de Força,Contato com fluido: resistência do ar,TF
+TF5,Tipos de Força,Contato com fluido: Empuxo (pressão do ar),TF
+TF6,Tipos de Força,Gravitação,TF
+TF7,Tipos de Força,Gravidade: A aceleração é independente do peso,TF
+TF8,Tipos de Força,Gravidade: Trajetória parabólica,TF

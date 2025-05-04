@@ -1,0 +1,31 @@
+﻿id_misconception,main_misconception,specific_misconception,id_main_concept
+K1,Cinemática,posição-velocidade não diferenciadas,K
+K2,Cinemática,velocidade-aceleração não diferenciadas,K
+K3,Cinemática,Composição de velocidade não vetorial,K
+I1,Impulso,"Impulso fornecido pelo ""impacto""",I
+I2,Impulso,Perda/recuperação do Impulso original,I
+I3,Impulso,Dissipação do impulso,I
+I4,Impulso,Acúmulo gradual/retardado de impulso,I
+I5,Impulso,impulso  circular,I
+AF1,Força Ativa,Somente agentes ativos exercem forças,AF
+AF2,Força Ativa,Movimento implica força ativa,AF
+AF3,Força Ativa,Nenhum movimento implica nenhuma força,AF
+AF4,Força Ativa,Velocidade proporcional à força aplicada,AF
+AF5,Força Ativa,Aceleração implica aumento de força,AF
+AF6,Força Ativa,Força causa aceleração até a velocidade terminal,AF
+AF7,Força Ativa,Força ativa se esgota,AF
+AR1,Pares de Ação/Reação,Maior massa implica maior força,AR
+AR2,Pares de Ação/Reação,O agente mais ativo produz a maior força,AR
+CI1,Concatenação de Influências,A maior força determina o movimento,CI
+CI2,Concatenação de Influências,O comprometimento da força determina o movimento,CI
+CI3,Concatenação de Influências,A última força a agir determina o movimento,CI
+CF,Outras Influências no Movimento,Força centrífuga,CF
+OB,Outras Influências no Movimento,Obstáculos não exercem força,OB
+R1,Resistência,A massa faz as coisas pararem,R
+R2,Resistência,Movimento quando a força supera a resistência,R
+R3,Resistência,Resistência se opõe à força/ímpeto,R
+G1,Gravidade,Gravidade assistida pela pressão do ar,G
+G2,Gravidade,Gravidade intrínseca à massa,G
+G3,Gravidade,Objetos mais pesados caem mais rápido,G
+G4,Gravidade,Gravidade aumenta à medida que os objetos caem,G
+G5,Gravidade,Gravidade atua após o fim do ímpeto,G

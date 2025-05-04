@@ -64,7 +64,8 @@ app.post('/login', (req, res) => {
 
     if (user && bcrypt.compareSync(password, user.password)) {
         req.session.username = username;
-        res.redirect(`/question01`);
+        const progress = getUserProgress(username)
+        res.redirect(`/question`+progress);
     } else {
         res.status(401).send('Invalid login');
     }
@@ -121,9 +122,10 @@ app.post('/submitAnswer', (req, res) => {
     if (existingResponse) {
             res.status(400).send('Você já respondeu essa questão.');
         } else {
-            saveUserResponse(username, questionNumber, answer);
+            saveUserResponse(username, questionNumber, ''+questionNumber+answer);
             updateUserProgress(username, questionNumber + 1);
-            res.send('Resposta registrada com sucesso');
+            // res.send('Resposta registrada com sucesso');
+            res.send('ok');
         }
     } catch (err) {
         console.error('Erro ao enviar resposta:', err);

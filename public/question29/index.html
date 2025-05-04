@@ -14,6 +14,10 @@
             const formData = new FormData(form);
             const answer = formData.get('answer');
 
+            if (!answer) {
+                alert("Por favor escolha um item antes de enviar.");
+                return;
+            }
             fetch('/submitAnswer', {
                 method: 'POST',
                 headers: {
@@ -23,7 +27,9 @@
             })
                 .then(response => response.text())
                 .then(data => {
-                    alert(data);
+                    if(data!=="ok"){
+                        alert(data);
+                    }
                     window.location.href = '/question30';
                 })
                 .catch(error => console.error('Error:', error));

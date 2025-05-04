@@ -10,7 +10,7 @@ const db = new Database("fci_n.db");
 /**
  * Adds a new user to the database.
  * Hashes the password before storing it.
- * 
+ *
  * @param {string} name - The user's full name
  * @param {string} username - The user's unique username
  * @param {string} password - The user's raw password (will be hashed)
@@ -22,7 +22,18 @@ const db = new Database("fci_n.db");
  * @param {string} city - The city where the user is located
  * @param {string} state - The state where the user is located
  */
-export function addUser(name, username, password, school, email, phone, date_of_birth, turma, city, state) {
+export function addUser(
+  name,
+  username,
+  password,
+  school,
+  email,
+  phone,
+  date_of_birth,
+  turma,
+  city,
+  state
+) {
   const hashedPassword = bcrypt.hashSync(password, 10); // Hash the password with 10 salt rounds
   const stmt = db.prepare(`
     INSERT INTO users (
@@ -31,12 +42,23 @@ export function addUser(name, username, password, school, email, phone, date_of_
       city, state
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
-  stmt.run(name, username, hashedPassword, school, email, phone, date_of_birth, turma, city, state);
+  stmt.run(
+    name,
+    username,
+    hashedPassword,
+    school,
+    email,
+    phone,
+    date_of_birth,
+    turma,
+    city,
+    state
+  );
 }
 
 /**
  * Updates a user's progress (e.g., the last completed question).
- * 
+ *
  * @param {string} username - The user's username
  * @param {number} progress - The new progress value (e.g., question number)
  */
@@ -47,7 +69,7 @@ export function updateUserProgress(username, progress) {
 
 /**
  * Retrieves all user information by username.
- * 
+ *
  * @param {string} username - The username to look up
  * @returns {object|undefined} - The user record, or undefined if not found
  */
@@ -58,19 +80,19 @@ export function getUserByUsername(username) {
 
 /**
  * Gets the current progress of a user.
- * 
+ *
  * @param {string} username - The user's username
  * @returns {number|null} - The progress value or null if not found
  */
 export function getUserProgress(username) {
   const stmt = db.prepare("SELECT progress FROM users WHERE username = ?");
   const user = stmt.get(username);
-  return user ? user.progress : null; // Return progress or null
+  return user ? String(user.progress).padStart(2, "0") : null;
 }
 
 /**
  * Saves a user's response to a specific question.
- * 
+ *
  * @param {string} username - The user submitting the response
  * @param {number} questionNumber - The question number
  * @param {string} response - The user's answer
@@ -84,7 +106,7 @@ export function saveUserResponse(username, questionNumber, response) {
 
 /**
  * Checks if the user has already submitted a response to the given question.
- * 
+ *
  * @param {string} username - The username to check
  * @param {number} questionNumber - The question number to check
  * @returns {object|undefined} - The response record if found, otherwise undefined
