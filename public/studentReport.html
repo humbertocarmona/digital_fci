@@ -1,142 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Generate Student Report</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 2rem;
-      background-color: #f9f9f9;
-    }
-
-    h2 {
-      margin-bottom: 1rem;
-    }
-
-    form {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 6px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      max-width: 500px;
-    }
-
-    label {
-      display: block;
-      margin-top: 1rem;
-    }
-
-    select, button {
-      font-size: 1rem;
-      padding: 0.4rem;
-      margin-top: 0.3rem;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    button {
-      margin-top: 2rem;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-  </style>
-</head>
-<body>
-  <h2>Generate Student Report</h2>
-  <form action="/generate-report" method="POST">
-    <label for="school">School:</label>
-    <select id="school" name="school" required>
-      <option value="">Loading schools...</option>
-    </select>
-
-    <label for="class">Class:</label>
-    <select id="class" name="class" required>
-      <option value="class1">1A</option>
-      <option value="class2">1B</option>
-      <option value="class3">1C</option>
-    </select>
-
-    <label for="student">Student:</label>
-    <select id="student" name="student" required>
-      <option value="">Select a school first</option>
-    </select>
-
-    <button type="submit">Generate Report</button>
-  </form>
-
-  <script>
-    async function populateSchools() {
-      try {
-        const res = await fetch('/api/schools');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const schools = await res.json();
-
-        const schoolSelect = document.getElementById('school');
-        schoolSelect.innerHTML = '';
-
-        if (schools.length === 0) {
-          schoolSelect.innerHTML = '<option disabled>No schools found</option>';
-          return;
-        }
-
-        schools.forEach(name => {
-          const option = document.createElement('option');
-          option.value = name;
-          option.textContent = name;
-          schoolSelect.appendChild(option);
-        });
-
-        // Select the first school and load its students
-        schoolSelect.value = schools[0];
-        populateStudents(schools[0]);
-      } catch (err) {
-        console.error("Error loading schools:", err);
-        alert("⚠️ Error loading schools. See console for details.");
-        document.getElementById('school').innerHTML = '<option disabled>Failed to load schools</option>';
+  <head>
+    <meta charset="UTF-8" />
+    <title>Generate Student Report</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+        background-color: #f9f9f9;
       }
-    }
 
-    async function populateStudents(schoolName) {
-      console.log("Fetching students for:", schoolName);
-      try {
-        const res = await fetch(`/api/students?school=${encodeURIComponent(schoolName)}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const students = await res.json();
-
-        const studentSelect = document.getElementById('student');
-        studentSelect.innerHTML = '';
-
-        if (students.length === 0) {
-          studentSelect.innerHTML = '<option disabled>No students found</option>';
-          return;
-        }
-
-        students.forEach(name => {
-          const option = document.createElement('option');
-          option.value = name;
-          option.textContent = name;
-          studentSelect.appendChild(option);
-        });
-      } catch (err) {
-        console.error("Error loading students:", err);
-        alert("⚠️ Error loading students. See console for details.");
-        document.getElementById('student').innerHTML = '<option disabled>Failed to load students</option>';
+      h2 {
+        margin-bottom: 1rem;
       }
-    }
 
-    window.onload = () => {
-      populateSchools();
-      document.getElementById('school').addEventListener('change', (e) => {
-        populateStudents(e.target.value);
-      });
-    };
-  </script>
-</body>
+      form {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+      }
+
+      label {
+        display: block;
+        margin-top: 1rem;
+      }
+
+      select,
+      button {
+        font-size: 1rem;
+        padding: 0.4rem;
+        margin-top: 0.3rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      button {
+        margin-top: 2rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Generate Student Report</h2>
+    <form action="/generate-report" method="POST">
+      <label for="school">School:</label>
+      <select id="school" name="school" required>
+        <option value="">Loading schools...</option>
+      </select>
+
+      <label for="class">Class:</label>
+      <select id="class" name="class" required>
+        <option value="class1">1A</option>
+        <option value="class2">1B</option>
+        <option value="class3">1C</option>
+      </select>
+
+      <label for="student">Student:</label>
+      <select id="student" name="student" required>
+        <option value="">Select a school first</option>
+      </select>
+
+      <button type="submit">Generate Report</button>
+    </form>
+
+    <script>
+      async function populateSchools() {
+        try {
+          const res = await fetch("/api/schools");
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const schools = await res.json();
+
+          const schoolSelect = document.getElementById("school");
+          schoolSelect.innerHTML = "";
+
+          if (schools.length === 0) {
+            schoolSelect.innerHTML =
+              "<option disabled>No schools found</option>";
+            return;
+          }
+
+          schools.forEach((name) => {
+            const option = document.createElement("option");
+            option.value = name;
+            option.textContent = name;
+            schoolSelect.appendChild(option);
+          });
+
+          // Select the first school and load its students
+          schoolSelect.value = schools[0];
+          populateStudents(schools[0]);
+        } catch (err) {
+          console.error("Error loading schools:", err);
+          alert("⚠️ Error loading schools. See console for details.");
+          document.getElementById("school").innerHTML =
+            "<option disabled>Failed to load schools</option>";
+        }
+      }
+
+      async function populateStudents(schoolName) {
+        console.log("Fetching students for:", schoolName);
+        try {
+          const res = await fetch(
+            `/api/students?school=${encodeURIComponent(schoolName)}`
+          );
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const students = await res.json();
+
+          const studentSelect = document.getElementById("student");
+          studentSelect.innerHTML = "";
+
+          if (students.length === 0) {
+            studentSelect.innerHTML =
+              "<option disabled>No students found</option>";
+            return;
+          }
+          students.forEach((student) => {
+            const option = document.createElement("option");
+            option.value = student.username; // Sends this in the POST
+            option.textContent = student.name; // Displays the real name
+            studentSelect.appendChild(option);
+          });
+        } catch (err) {
+          console.error("Error loading students:", err);
+          alert("⚠️ Error loading students. See console for details.");
+          document.getElementById("student").innerHTML =
+            "<option disabled>Failed to load students</option>";
+        }
+      }
+
+      window.onload = () => {
+        populateSchools();
+        document.getElementById("school").addEventListener("change", (e) => {
+          populateStudents(e.target.value);
+        });
+      };
+    </script>
+  </body>
 </html>

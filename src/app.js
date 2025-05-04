@@ -203,6 +203,26 @@ app.get("/api/schools", (req, res) => {
   res.json(schools.map((s) => s.name));
 });
 
+// app.get("/api/students", (req, res) => {
+//   const school = req.query.school;
+
+//   if (!school) {
+//     return res.status(400).json({ error: "Missing school parameter" });
+//   }
+
+//   try {
+//     console.log("Searching students for school:", school);
+//     const stmt = db.prepare(
+//       "SELECT name FROM users WHERE type = 'student' AND school = ?"
+//     );
+//     const students = stmt.all(school);
+//     res.json(students.map((s) => s.name));
+//   } catch (err) {
+//     console.error("❌ DB error in /api/students:", err.message);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
+
 app.get("/api/students", (req, res) => {
   const school = req.query.school;
 
@@ -210,19 +230,13 @@ app.get("/api/students", (req, res) => {
     return res.status(400).json({ error: "Missing school parameter" });
   }
 
-  try {
-    console.log("Searching students for school:", school);
-    const stmt = db.prepare(
-      "SELECT name FROM users WHERE type = 'student' AND school = ?"
-    );
-    const students = stmt.all(school);
-    res.json(students.map((s) => s.name));
-  } catch (err) {
-    console.error("❌ DB error in /api/students:", err.message);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+  const stmt = db.prepare(
+    "SELECT username, name FROM users WHERE type = 'student' AND school = ?"
+  );
 
+  const students = stmt.all(school);
+  res.json(students); // Now returns array of { username, name }
+});
 
 import { generateStudentReport } from './generateStudentReport.js'; // Adjust path as needed
 

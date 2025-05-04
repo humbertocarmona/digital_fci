@@ -4,6 +4,38 @@ import fs from "fs";
 import path from "path";
 import bcrypt from "bcrypt";
 
+const createSchoolsTable = `
+  CREATE TABLE IF NOT EXISTS schools (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    city TEXT NOT NULL,
+    state TEXT NOT NULL
+  );
+`;
+
+const createClassTable = `CREATE TABLE classes (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,         -- e.g., "1A", "2B", or "Physics 2024"
+  school_id INTEGER NOT NULL,
+  FOREIGN KEY (school_id) REFERENCES schools(id)
+);`
+
+
+const createUserTable = `CREATE TABLE users (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  username TEXT NOT NULL UNIQUE,
+  password TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  date_of_birth TEXT NOT NULL,
+  class_id INTEGER NOT NULL,
+  type TEXT NOT NULL, -- 'student' or 'teacher'
+  progress INTEGER NOT NULL DEFAULT 1,
+  FOREIGN KEY (class_id) REFERENCES classes(id)
+);`
+
+
 // === SQL Table Definitions ===
 const createUsersTable = `
   CREATE TABLE IF NOT EXISTS users (
@@ -23,14 +55,7 @@ const createUsersTable = `
   );
 `;
 
-const createSchoolsTable = `
-  CREATE TABLE IF NOT EXISTS schools (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL,
-    city TEXT NOT NULL,
-    state TEXT NOT NULL
-  );
-`;
+
 
 const createResponsesTable = `
     CREATE TABLE IF NOT EXISTS responses (
