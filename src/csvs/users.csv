@@ -1,2 +1,3 @@
-name,username,school,email,phone,date_of_birth,class,city,state,type
-Humberto Carmona,carmona,Escola,carmona@fisica.ufc.br,85981199522,1967-03-08,1A,Fortaleza,CE,student
+name,username,email,phone,date_of_birth,class_id,type
+Humberto Carmona,carmona,carmona@fisica.ufc.br,85981199522,1967-03-08,1,teacher
+Humberto Carmona,beto,carmona@fisica.ufc.br,85981199522,1967-03-08,1,student

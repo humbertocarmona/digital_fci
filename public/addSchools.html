@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adicionar Escola</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f9ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+
+    .class-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .class-item span {
+      flex: 1;
+    }
+
+    .class-item button {
+      background-color: #ccc;
+      color: #333;
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    button[type="submit"] {
+      background-color: #007acc;
+      color: white;
+      margin-top: 25px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Adicionar Escola e Turmas</h1>
+
+  <form id="schoolForm">
+    <label for="name">Nome da Escola:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="city">Cidade:</label>
+    <input type="text" id="city" name="city" required>
+
+    <label for="state">Estado:</label>
+    <input type="text" id="state" name="state" required>
+
+    <label for="classInput">Adicionar Turma (ex: 1A, 2B):</label>
+    <input type="text" id="classInput" placeholder="Digite o nome da turma">
+    <button type="button" onclick="addClass()">Adicionar Turma</button>
+
+    <div id="classList"></div>
+    <input type="hidden" id="classNames" name="classNames">
+
+    <button type="submit">Salvar Escola</button>
+  </form>
+
+  <script>
+    const classList = [];
+
+    function addClass() {
+      const input = document.getElementById('classInput');
+      const value = input.value.trim();
+
+      if (!value || classList.includes(value)) {
+        input.value = '';
+        return;
+      }
+
+      classList.push(value);
+      input.value = '';
+      renderClassList();
+    }
+
+    function removeClass(name) {
+      const index = classList.indexOf(name);
+      if (index >= 0) {
+        classList.splice(index, 1);
+        renderClassList();
+      }
+    }
+
+    function renderClassList() {
+      const container = document.getElementById('classList');
+      container.innerHTML = '';
+
+      classList.forEach(name => {
+        const div = document.createElement('div');
+        div.className = 'class-item';
+
+        const span = document.createElement('span');
+        span.textContent = name;
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = 'Remover';
+        btn.onclick = () => removeClass(name);
+
+        div.appendChild(span);
+        div.appendChild(btn);
+        container.appendChild(div);
+      });
+
+      document.getElementById('classNames').value = classList.join(',');
+    }
+
+    document.getElementById('schoolForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (classList.length === 0) {
+        alert("Adicione pelo menos uma turma.");
+        return;
+      }
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch('/addSchoolWithClasses', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          alert("✅ Escola e turmas cadastradas com sucesso!");
+          window.location.href = '/';
+        } else {
+          const text = await res.text();
+          alert("❌ Erro ao cadastrar: " + text);
+        }
+      } catch (err) {
+        console.error("Erro:", err);
+        alert("Erro inesperado. Veja o console.");
+      }
+    });
+  </script>
+</body>
+</html>

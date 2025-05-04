@@ -14,47 +14,37 @@ const db = new Database("db/database.db");
  * @param {string} name - The user's full name
  * @param {string} username - The user's unique username
  * @param {string} password - The user's raw password (will be hashed)
- * @param {string} school - The name of the user's school
  * @param {string} email - The user's email address
  * @param {string} phone - The user's phone number
  * @param {string} date_of_birth - The user's date of birth
- * @param {string} turma - The user's class or group
- * @param {string} city - The city where the user is located
- * @param {string} state - The state where the user is located
- * @param {string} tyoe - student or teacher
+ * @param {string} class_id - The user's class or group
+ * @param {string} type - student or teacher
  */
 export function addUser(
   name,
   username,
   password,
-  school,
   email,
   phone,
   date_of_birth,
-  turma,
-  city,
-  state,
+  class_id,
   type
 ) {
   const hashedPassword = bcrypt.hashSync(password, 10); // Hash the password with 10 salt rounds
   const stmt = db.prepare(`
     INSERT INTO users (
-      name, username, password, school,
-      email, phone, date_of_birth, class,
-      city, state, type
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      name, username, password,
+      email, phone, date_of_birth, class_id,type
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
   stmt.run(
     name,
     username,
     hashedPassword,
-    school,
     email,
     phone,
     date_of_birth,
-    turma,
-    city,
-    state,
+    class_id,
     type
   );
 }

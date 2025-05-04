@@ -13,15 +13,15 @@ const createSchoolsTable = `
   );
 `;
 
-const createClassTable = `CREATE TABLE classes (
+const createClassTable = `CREATE TABLE IF NOT EXISTS classes (
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,         -- e.g., "1A", "2B", or "Physics 2024"
   school_id INTEGER NOT NULL,
   FOREIGN KEY (school_id) REFERENCES schools(id)
-);`
+);`;
 
 
-const createUserTable = `CREATE TABLE users (
+const createUsersTable = `CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
   username TEXT NOT NULL UNIQUE,
@@ -33,27 +33,7 @@ const createUserTable = `CREATE TABLE users (
   type TEXT NOT NULL, -- 'student' or 'teacher'
   progress INTEGER NOT NULL DEFAULT 1,
   FOREIGN KEY (class_id) REFERENCES classes(id)
-);`
-
-
-// === SQL Table Definitions ===
-const createUsersTable = `
-  CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL,
-    username TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    school TEXT NOT NULL,
-    email TEXT NOT NULL,
-    phone TEXT NOT NULL,
-    date_of_birth TEXT NOT NULL,
-    class TEXT NOT NULL,
-    city TEXT NOT NULL,
-    state TEXT NOT NULL,
-    type TEXT NOT NULL,
-    progress INTEGER NOT NULL DEFAULT 1
-  );
-`;
+);`;
 
 
 
@@ -109,19 +89,111 @@ const createItemsTable = `
     FOREIGN KEY (id_misconception) REFERENCES misconceptions(id_misconception)
   );
 `;
+
 //    correct_item TEXT CHECK (correct_item IN ('TRUE', 'FALSE')) NOT NULL,
 
 // === Database Setup ===
 const db = new Database("db/database.db");
 db.pragma("journal_mode = WAL");
 
-db.exec(createUsersTable);
 db.exec(createSchoolsTable);
+db.exec(createClassTable);
+db.exec(createUsersTable);
 db.exec(createResponsesTable);
 db.exec(createConceptsTable);
 db.exec(createMisconceptionsTable);
 db.exec(createQuestionsTable);
 db.exec(createItemsTable);
+
+// === Load schools.csv and seed schools table ===
+const schoolsCsvPath = path.resolve("./src/csvs/schools.csv");
+if (fs.existsSync(schoolsCsvPath)) {
+  console.log("CSV file found at:", schoolsCsvPath);
+
+  const csvData = fs
+    .readFileSync(schoolsCsvPath, "utf-8")
+    .replace(/^\uFEFF/, "")
+    .trim();
+  const lines = csvData.split("\n");
+  const dataRows = lines
+    .slice(1)
+    .map((line) => line.split(",").map((v) => v.trim()));
+
+  console.log("First school row:", dataRows[0]);
+
+  const schoolCount = db
+    .prepare("SELECT COUNT(*) as count FROM schools")
+    .get().count;
+  console.log("Schools in table before insert:", schoolCount);
+
+  if (schoolCount === 0) {
+    const insert = db.prepare(`
+      INSERT INTO schools (name, city, state) VALUES (?, ?, ?)
+    `);
+
+    const insertMany = db.transaction((rows) => {
+      for (const row of rows) {
+        if (row.length === 3) {
+          insert.run(row);
+        } else {
+          console.warn("Skipping malformed row:", row);
+        }
+      }
+    });
+
+    insertMany(dataRows);
+    console.log(`Inserted ${dataRows.length} schools.`);
+  } else {
+    console.log("Schools table already populated.");
+  }
+} else {
+  console.warn("CSV file 'schools.csv' not found. Skipping schools seeding.");
+}
+
+const classesCsvPath = path.resolve("./src/csvs/classes.csv");
+if (fs.existsSync(classesCsvPath)) {
+  console.log("CSV file found at:", classesCsvPath);
+
+  const csvData = fs
+    .readFileSync(classesCsvPath, "utf-8")
+    .replace(/^\uFEFF/, "")
+    .trim();
+  const lines = csvData.split("\n");
+  const dataRows = lines
+    .slice(1)
+    .map((line) => line.split(",").map((v) => v.trim()));
+
+  console.log("First class row:", dataRows[0]);
+
+  const classCount = db
+    .prepare("SELECT COUNT(*) as count FROM classes")
+    .get().count;
+  console.log("Schools in table before insert:", classCount);
+
+  if (classCount === 0) {
+    const insert = db.prepare(`
+      INSERT INTO classes (name, school_id) VALUES (?, ?)
+    `);
+
+    const insertMany = db.transaction((rows) => {
+      for (const row of rows) {
+        if (row.length === 2) {
+          insert.run(row);
+        } else {
+          console.warn("Skipping malformed row:", row);
+        }
+      }
+    });
+
+    insertMany(dataRows);
+    console.log(`Inserted ${dataRows.length} classes.`);
+  } else {
+    console.log("Classes table already populated.");
+  }
+} else {
+  console.warn("CSV file 'classes.csv' not found. Skipping schools seeding.");
+}
+
 
 // === Load users.csv and seed users table ===
 const usersCsvPath = path.resolve("./src/csvs/users.csv");
@@ -148,9 +220,9 @@ if (fs.existsSync(usersCsvPath)) {
   if (userCount === 0) {
     const insert = db.prepare(`
       INSERT INTO users (
-        name, username, password, school, email, phone,
-        date_of_birth, class, city, state, type
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        name, username, password,  email, phone,
+        date_of_birth, class_id, type
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const insertMany = db.transaction((rows) => {
@@ -159,19 +231,17 @@ if (fs.existsSync(usersCsvPath)) {
       const defaultHashedPassword = bcrypt.hashSync(defaultPasswordPlain, 10);
 
       for (const row of rows) {
-        if (row.length === 10) {
+        console.log(''+row.length);
+        if (row.length === 7) {
           insert.run([
             row[0], // name
             row[1], // username
             defaultHashedPassword,
-            row[2], // school
-            row[3], // email
-            row[4], // phone
-            row[5], // date_of_birth
-            row[6], // class
-            row[7], // city
-            row[8], // state
-            row[9], // type
+            row[2], // email
+            row[3], // phone
+            row[4], // date_of_birth
+            row[5], // class_id
+            row[6], // type
           ]);
         } else {
           console.warn("Skipping malformed user row:", row);
@@ -262,54 +332,8 @@ if (fs.existsSync(misconceptionsCsvPath)) {
   );
 }
 
-// === Load schools.csv and seed schools table ===
-const schoolsCsvPath = path.resolve("./src/csvs/schools.csv");
-if (fs.existsSync(schoolsCsvPath)) {
-  console.log("CSV file found at:", schoolsCsvPath);
-
-  const csvData = fs
-    .readFileSync(schoolsCsvPath, "utf-8")
-    .replace(/^\uFEFF/, "")
-    .trim();
-  const lines = csvData.split("\n");
-  const dataRows = lines
-    .slice(1)
-    .map((line) => line.split(",").map((v) => v.trim()));
-
-  console.log("First school row:", dataRows[0]);
-
-  const schoolCount = db
-    .prepare("SELECT COUNT(*) as count FROM schools")
-    .get().count;
-  console.log("Schools in table before insert:", schoolCount);
-
-  if (schoolCount === 0) {
-    const insert = db.prepare(`
-      INSERT INTO schools (name, city, state) VALUES (?, ?, ?)
-    `);
-
-    const insertMany = db.transaction((rows) => {
-      for (const row of rows) {
-        if (row.length === 3) {
-          insert.run(row);
-        } else {
-          console.warn("Skipping malformed row:", row);
-        }
-      }
-    });
-
-    insertMany(dataRows);
-    console.log(`Inserted ${dataRows.length} schools.`);
-  } else {
-    console.log("Schools table already populated.");
-  }
-} else {
-  console.warn("CSV file 'schools.csv' not found. Skipping schools seeding.");
-}
-
 // === Load questions.csv and seed questions table ===
 const questionsCsvPath = path.resolve("./src/csvs/questions.csv");
-
 if (fs.existsSync(questionsCsvPath)) {
   console.log("CSV file found at:", questionsCsvPath);
 
@@ -365,54 +389,10 @@ if (fs.existsSync(questionsCsvPath)) {
     "CSV file 'questions.csv' not found. Skipping questions seeding."
   );
 }
-
-// === Load items.csv and seed items table ===
-if (fs.existsSync(schoolsCsvPath)) {
-  console.log("CSV file found at:", schoolsCsvPath);
-
-  const csvData = fs
-    .readFileSync(schoolsCsvPath, "utf-8")
-    .replace(/^\uFEFF/, "")
-    .trim();
-  const lines = csvData.split("\n");
-  const dataRows = lines
-    .slice(1)
-    .map((line) => line.split(",").map((v) => v.trim()));
-
-  console.log("First school row:", dataRows[0]);
-
-  const schoolCount = db
-    .prepare("SELECT COUNT(*) as count FROM schools")
-    .get().count;
-  console.log("Schools in table before insert:", schoolCount);
-
-  if (schoolCount === 0) {
-    const insert = db.prepare(`
-      INSERT INTO schools (name, city, state) VALUES (?, ?, ?)
-    `);
-
-    const insertMany = db.transaction((rows) => {
-      for (const row of rows) {
-        if (row.length === 3) {
-          insert.run(row);
-        } else {
-          console.warn("Skipping malformed row:", row);
-        }
-      }
-    });
-
-    insertMany(dataRows);
-    console.log(`Inserted ${dataRows.length} schools.`);
-  } else {
-    console.log("Schools table already populated.");
-  }
-} else {
-  console.warn("CSV file 'schools.csv' not found. Skipping schools seeding.");
-}
+// === =========================================================================
 
 // === Load items.csv and seed items table ===
 const itemsCsvPath = path.resolve("./src/csvs/items.csv");
-
 if (fs.existsSync(itemsCsvPath)) {
   console.log("CSV file found at:", itemsCsvPath);
 
@@ -472,3 +452,4 @@ if (fs.existsSync(itemsCsvPath)) {
 } else {
   console.warn("CSV file 'items.csv' not found. Skipping items seeding.");
 }
+// === =========================================================================
