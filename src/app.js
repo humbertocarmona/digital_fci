@@ -157,21 +157,6 @@ app.post("/updateProgress", (req, res) => {
   }
 });
 
-// // API for form population
-// app.get("/cities", (req, res) => {
-//   const { state } = req.query;
-//   const stmt = db.prepare("SELECT DISTINCT city FROM schools WHERE state = ?");
-//   res.json(stmt.all(state).map((c) => c.city));
-// });
-
-// app.get("/schools", (req, res) => {
-//   const { state, city } = req.query;
-//   const stmt = db.prepare(
-//     "SELECT id, name FROM schools WHERE state = ? AND city = ?"
-//   );
-//   res.json(stmt.all(state, city));
-// });
-
 app.get("/api/schools", (req, res) => {
   const stmt = db.prepare("SELECT id, name FROM schools");
   res.json(stmt.all());

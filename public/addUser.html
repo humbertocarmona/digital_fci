@@ -1,153 +1,157 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Adicionar Usuário</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f9ff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adicionar Usuário</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f9ff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
 
-    h1 {
-      color: #333;
-      margin-bottom: 20px;
-    }
+      h1 {
+        color: #333;
+        margin-bottom: 20px;
+      }
 
-    form {
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      max-width: 600px;
-      width: 100%;
-    }
+      form {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+      }
 
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
+      label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+      }
 
-    input, select {
-      width: 100%;
-      padding: 8px 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1em;
-    }
+      input,
+      select {
+        width: 100%;
+        padding: 8px 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+      }
 
-    button {
-      margin-top: 25px;
-      padding: 10px 20px;
-      background-color: #007acc;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+      button {
+        margin-top: 25px;
+        padding: 10px 20px;
+        background-color: #007acc;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
 
-    button:hover {
-      background-color: #005fa3;
-    }
-  </style>
-</head>
-<body>
-  <h1>Adicionar Usuário</h1>
+      button:hover {
+        background-color: #005fa3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Adicionar Usuário</h1>
 
-  <form action="/addUserPost" method="POST">
-    <label for="name">Nome Completo:</label>
-    <input type="text" id="name" name="name" required>
+    <form action="/addUserPost" method="POST">
+      <label for="name">Nome Completo:</label>
+      <input type="text" id="name" name="name" required />
 
-    <label for="username">Usuário:</label>
-    <input type="text" id="username" name="username" required>
+      <label for="username">Usuário:</label>
+      <input type="text" id="username" name="username" required />
 
-    <label for="password">Senha:</label>
-    <input type="password" id="password" name="password" required>
+      <label for="password">Senha:</label>
+      <input type="password" id="password" name="password" required />
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
 
-    <label for="school">Escola:</label>
-    <select id="school" name="school" required>
-      <option value="">Carregando escolas...</option>
-    </select>
+      <label for="school">Escola:</label>
+      <select id="school" name="school" required>
+        <option value="">Carregando escolas...</option>
+      </select>
 
-    <label for="class_id">Turma:</label>
-    <select id="class_id" name="class_id" required>
-      <option value="">Selecione a Escola</option>
-    </select>
+      <label for="class_id">Turma:</label>
+      <select id="class_id" name="class_id" required>
+        <option value="">Selecione a Escola</option>
+      </select>
 
-    <label for="type">Tipo de Usuário:</label>
-    <select id="type" name="type" required>
-      <option value="student">Estudante</option>
-      <option value="teacher">Professor</option>
-    </select>
+      <label for="type">Tipo de Usuário:</label>
+      <select id="type" name="type" required>
+        <option value="student">Estudante</option>
+        <option value="teacher">Professor</option>
+      </select>
 
-    <button type="submit">Adicionar</button>
-  </form>
+      <button type="submit">Adicionar</button>
+    </form>
 
-  <script>
-    async function populateSchools() {
-      try {
-        const res = await fetch("/api/schools");
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const schools = await res.json();
+    <script>
+      async function populateSchools() {
+        try {
+          const res = await fetch("/api/schools");
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const schools = await res.json();
 
-        const schoolSelect = document.getElementById("school");
-        schoolSelect.innerHTML = "";
+          const schoolSelect = document.getElementById("school");
+          schoolSelect.innerHTML = "";
 
-        schools.forEach(({ id, name }) => {
-          const option = document.createElement("option");
-          option.value = id;
-          option.textContent = name;
-          schoolSelect.appendChild(option);
-        });
+          schools.forEach(({ id, name }) => {
+            const option = document.createElement("option");
+            option.value = id;
+            option.textContent = name;
+            schoolSelect.appendChild(option);
+          });
 
-        if (schools.length > 0) {
-          schoolSelect.value = schools[0].id;
-          populateClasses(schools[0].id);
+          if (schools.length > 0) {
+            schoolSelect.value = schools[0].id;
+            populateClasses(schools[0].id);
+          }
+        } catch (err) {
+          console.error("Error loading schools:", err);
+          alert("⚠️ Failed to load schools.");
         }
-      } catch (err) {
-        console.error("Error loading schools:", err);
-        alert("⚠️ Failed to load schools.");
       }
-    }
 
-    async function populateClasses(schoolId) {
-      try {
-        const res = await fetch(`/api/classes?school_id=${schoolId}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const classes = await res.json();
+      async function populateClasses(schoolId) {
+        try {
+          const res = await fetch(`/api/classes?school_id=${schoolId}`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const classes = await res.json();
 
-        const classSelect = document.getElementById("class_id");
-        classSelect.innerHTML = "";
+          const classSelect = document.getElementById("class_id");
+          classSelect.innerHTML = "";
 
-        classes.forEach(({ id, name }) => {
-          const option = document.createElement("option");
-          option.value = id;
-          option.textContent = name;
-          classSelect.appendChild(option);
+          classes.forEach(({ id, name }) => {
+            const option = document.createElement("option");
+            option.value = id;
+            option.textContent = name;
+            classSelect.appendChild(option);
+          });
+        } catch (err) {
+          console.error("Error loading classes:", err);
+          alert("⚠️ Failed to load classes.");
+          document.getElementById("class").innerHTML =
+            "<option disabled>Erro</option>";
+        }
+      }
+      window.onload = () => {
+        populateSchools();
+
+        document.getElementById("school").addEventListener("change", (e) => {
+          populateClasses(e.target.value);
         });
-
-      } catch (err) {
-        console.error("Error loading classes:", err);
-        alert("⚠️ Failed to load classes.");
-        document.getElementById("class").innerHTML = "<option disabled>Erro</option>";
-      }
-    }
-    window.onload = () => {
-      populateSchools();
-    };
-
-  </script>
-</body>
+      };
+    </script>
+  </body>
 </html>
