@@ -25,25 +25,20 @@ export function addUser(
   username,
   password,
   email,
-  phone,
-  date_of_birth,
   class_id,
   type
 ) {
   const hashedPassword = bcrypt.hashSync(password, 10); // Hash the password with 10 salt rounds
   const stmt = db.prepare(`
     INSERT INTO users (
-      name, username, password,
-      email, phone, date_of_birth, class_id,type
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      name, username, password, email, class_id,type
+    ) VALUES (?, ?, ?, ?, ?, ?)
   `);
   stmt.run(
     name,
     username,
     hashedPassword,
     email,
-    phone,
-    date_of_birth,
     class_id,
     type
   );

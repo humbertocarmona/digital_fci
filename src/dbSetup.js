@@ -27,15 +27,10 @@ const createUsersTable = `CREATE TABLE IF NOT EXISTS users (
   username TEXT NOT NULL UNIQUE,
   password TEXT NOT NULL,
   email TEXT NOT NULL,
-  phone TEXT NOT NULL,
-  date_of_birth TEXT NOT NULL,
   class_id INTEGER NOT NULL,
   type TEXT NOT NULL, -- 'student' or 'teacher'
   progress INTEGER NOT NULL DEFAULT 1,
-  FOREIGN KEY (class_id) REFERENCES classes(id)
-);`;
-
-
+  FOREIGN KEY (class_id) REFERENCES classes(id));`;
 
 const createResponsesTable = `
     CREATE TABLE IF NOT EXISTS responses (
@@ -220,9 +215,8 @@ if (fs.existsSync(usersCsvPath)) {
   if (userCount === 0) {
     const insert = db.prepare(`
       INSERT INTO users (
-        name, username, password,  email, phone,
-        date_of_birth, class_id, type
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        name, username, password,  email, class_id, type
+      ) VALUES (?, ?, ?, ?, ?, ?);
     `);
 
     const insertMany = db.transaction((rows) => {
@@ -232,16 +226,14 @@ if (fs.existsSync(usersCsvPath)) {
 
       for (const row of rows) {
         console.log(''+row.length);
-        if (row.length === 7) {
+        if (row.length === 5) {
           insert.run([
             row[0], // name
             row[1], // username
             defaultHashedPassword,
             row[2], // email
-            row[3], // phone
-            row[4], // date_of_birth
-            row[5], // class_id
-            row[6], // type
+            row[3], // class_id
+            row[4], // type
           ]);
         } else {
           console.warn("Skipping malformed user row:", row);
