@@ -2,12 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Generate Student Report</title>
+  <title>Gerar Relatório de Estudante</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      /* font-family: Arial, sans-serif;
       margin: 2rem;
-      background-color: #f9f9f9;
+      background-color: #f9f9f9; */
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f8ff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+
     }
 
     h2 {
@@ -49,24 +60,24 @@
   </style>
 </head>
 <body>
-  <h2>Generate Student Report</h2>
+  <h2>Gerar Relatório de Estudante</h2>
   <form action="/generate-report" method="POST">
-    <label for="school">School:</label>
+    <label for="school">Escola:</label>
     <select id="school" name="school" required>
-      <option value="">Loading schools...</option>
+      <option value="">Carregando escolas...</option>
     </select>
 
-    <label for="class">Class:</label>
+    <label for="class">Turma:</label>
     <select id="class" name="class" required>
-      <option value="">Select a school first</option>
+      <option value="">Selecione a Escola</option>
     </select>
 
-    <label for="student">Student:</label>
+    <label for="student">Estudante:</label>
     <select id="student" name="student" required>
-      <option value="">Select a class first</option>
+      <option value="">Selecione a Turma</option>
     </select>
 
-    <button type="submit">Generate Report</button>
+    <button type="submit">Gerar Relatório</button>
   </form>
 
   <script>

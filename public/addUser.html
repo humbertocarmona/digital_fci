@@ -2,7 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Gerar Relatório do Estudante</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adicionar Usuário</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -60,115 +61,91 @@
   </style>
 </head>
 <body>
-  <h1>Gerar Relatório do Estudante</h1>
+  <h1>Adicionar Usuário</h1>
 
-  <form action="/generate-report" method="POST">
-    <label for="school">Escola:</label>
-    <select id="school" name="school" required>
-      <option value="">Carregando escolas...</option>
-    </select>
+  <form action="/addUser" method="POST">
+    <label for="name">Nome Completo:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="username">Usuário:</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="password">Senha:</label>
+    <input type="password" id="password" name="password" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="phone">Telefone:</label>
+    <input type="text" id="phone" name="phone" required>
+
+    <label for="date_of_birth">Data de Nascimento:</label>
+    <input type="date" id="date_of_birth" name="date_of_birth" required>
 
     <label for="class">Turma:</label>
-    <select id="class" name="class" required>
-      <option value="">Selecione uma escola primeiro</option>
+    <input type="text" id="class" name="class" required>
+
+    <label for="state">Estado:</label>
+    <select id="state" name="state" required>
+      <option value="CE" selected>CE - Ceará</option>
     </select>
 
-    <label for="student">Estudante:</label>
-    <select id="student" name="student" required>
-      <option value="">Selecione uma turma primeiro</option>
+    <label for="city">Cidade:</label>
+    <select id="city" name="city" required>
+      <option value="Fortaleza" selected>Fortaleza</option>
     </select>
 
-    <button type="submit">Gerar Relatório</button>
+    <label for="school">Escola:</label>
+    <select id="school" name="school" required>
+      <option value="">Selecione uma escola</option>
+    </select>
+
+    <button type="submit">Adicionar</button>
   </form>
 
   <script>
-    async function populateSchools() {
-      try {
-        const res = await fetch("/api/schools");
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const schools = await res.json();
+    document.getElementById("state").addEventListener("change", async function () {
+      const state = this.value;
+      const citySelect = document.getElementById("city");
+      const schoolSelect = document.getElementById("school");
 
-        const schoolSelect = document.getElementById("school");
-        schoolSelect.innerHTML = "";
+      citySelect.innerHTML = "";
+      schoolSelect.innerHTML = "<option value=''>Selecione uma escola</option>";
 
-        schools.forEach(({ id, name }) => {
-          const option = document.createElement("option");
-          option.value = id;
-          option.textContent = name;
-          schoolSelect.appendChild(option);
-        });
+      const res = await fetch(`/cities?state=${state}`);
+      const cities = await res.json();
 
-        if (schools.length > 0) {
-          schoolSelect.value = schools[0].id;
-          populateClasses(schools[0].id);
-        }
-      } catch (err) {
-        console.error("Erro ao carregar escolas:", err);
-        alert("⚠️ Falha ao carregar escolas.");
+      for (const city of cities) {
+        const option = document.createElement("option");
+        option.value = city;
+        option.textContent = city;
+        citySelect.appendChild(option);
       }
-    }
 
-    async function populateClasses(schoolId) {
-      try {
-        const res = await fetch(`/api/classes?school_id=${schoolId}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const classes = await res.json();
+      citySelect.dispatchEvent(new Event("change"));
+    });
 
-        const classSelect = document.getElementById("class");
-        classSelect.innerHTML = "";
+    document.getElementById("city").addEventListener("change", async function () {
+      const city = this.value;
+      const state = document.getElementById("state").value;
+      const schoolSelect = document.getElementById("school");
 
-        classes.forEach(({ id, name }) => {
-          const option = document.createElement("option");
-          option.value = id;
-          option.textContent = name;
-          classSelect.appendChild(option);
-        });
+      schoolSelect.innerHTML = "<option value=''>Selecione uma escola</option>";
 
-        if (classes.length > 0) {
-          classSelect.value = classes[0].id;
-          populateStudents(classes[0].id);
-        }
-      } catch (err) {
-        console.error("Erro ao carregar turmas:", err);
-        alert("⚠️ Falha ao carregar turmas.");
-        document.getElementById("class").innerHTML = "<option disabled>Erro</option>";
+      const res = await fetch(`/schools?state=${state}&city=${city}`);
+      const schools = await res.json();
+
+      for (const school of schools) {
+        const option = document.createElement("option");
+        option.value = school;
+        option.textContent = school;
+        schoolSelect.appendChild(option);
       }
-    }
+    });
 
-    async function populateStudents(classId) {
-      try {
-        const res = await fetch(`/api/students?class_id=${classId}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const students = await res.json();
-
-        const studentSelect = document.getElementById("student");
-        studentSelect.innerHTML = "";
-
-        students.forEach(({ username, name }) => {
-          const option = document.createElement("option");
-          option.value = username;
-          option.textContent = name;
-          studentSelect.appendChild(option);
-        });
-      } catch (err) {
-        console.error("Erro ao carregar estudantes:", err);
-        alert("⚠️ Falha ao carregar estudantes.");
-        document.getElementById("student").innerHTML = "<option disabled>Erro</option>";
-      }
-    }
-
-    window.onload = () => {
-      populateSchools();
-
-      document.getElementById("school").addEventListener("change", (e) => {
-        populateClasses(e.target.value);
-        document.getElementById("student").innerHTML = "<option>Selecione uma turma</option>";
-      });
-
-      document.getElementById("class").addEventListener("change", (e) => {
-        populateStudents(e.target.value);
-      });
-    };
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("state").dispatchEvent(new Event("change"));
+    });
   </script>
 </body>
 </html>

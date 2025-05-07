@@ -71,7 +71,8 @@ app.post("/login", (req, res) => {
 
     if (user.type === "teacher") {
       // Redirect teacher to report form
-      res.redirect("/studentReport.html");
+      res.redirect("/teacher_login.html")
+      // res.redirect("/studentReport.html");
     } else if (user.type === "student") {
       const progress = getUserProgress(username);
       res.redirect(`questions/question${progress}`);

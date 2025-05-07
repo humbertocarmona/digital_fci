@@ -133,3 +133,8 @@ dist
 .db
 .db-shm
 .db-wal
+db/database.db
+db/database.db-shm
+.gitignore
+db/database.db-wal
+reports/
