@@ -67,8 +67,8 @@
       <option value="">Carregando escolas...</option>
     </select>
 
-    <label for="class">Turma:</label>
-    <select id="class" name="class" required>
+    <label for="class_id">Turma:</label>
+    <select id="class_id" name="class_id" required>
       <option value="">Selecione a Escola</option>
     </select>
 
@@ -113,7 +113,7 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const classes = await res.json();
 
-        const classSelect = document.getElementById("class");
+        const classSelect = document.getElementById("class_id");
         classSelect.innerHTML = "";
 
         classes.forEach(({ id, name }) => {

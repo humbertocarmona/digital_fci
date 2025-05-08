@@ -214,15 +214,14 @@ app.post("/addSchoolWithClasses", (req, res) => {
 
 app.post("/generate-report", async (req, res) => {
   try {
-    const { school, class: classId, student: username } = req.body;
+    const { school, class_id: classId, student: username } = req.body;
 
     if (!school || !classId || !username) {
       return res.status(400).send("Dados ausentes do formulário.");
     }
 
+
     const reportPath = await generateStudentReport({
-      school_id: school,
-      class_id: classId,
       username,
     });
 

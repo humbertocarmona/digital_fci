@@ -30,7 +30,7 @@ export async function generateStudentReport({ username }) {
     JOIN concepts co ON q.id_concept = co.id_concept
     LEFT JOIN misconceptions ON i.id_misconception = misconceptions.id_misconception
     WHERE u.username = ?
-    ORDER BY r.id
+    ORDER BY main_concept
   `;
 
   const rows = db.prepare(query).all(username);
@@ -51,18 +51,12 @@ export async function generateStudentReport({ username }) {
   <meta charset="UTF-8">
   <title>Relatório para  ${student_name}</title>
   <style>
-    body { font-family: Arial; margin: 20px; background: #fff; }
-    h2 { margin-bottom: 5px; }
-    p { margin-top: 0; margin-bottom: 20px; }
-
+    body { font-family: Arial; margin: 20px; }
     table { border-collapse: collapse; width: 100%; }
-    th, td { padding: 8px 12px; border: 1px solid #ccc; text-align: left; }
-    th { background: #f4f4f4; cursor: pointer; }
+    th, td { padding: 8px 12px; border: 1px solid #ccc; }
+    th { background: #f4f4f4; }
     .correct { background-color: #c8e6c9; }
     .incorrect { background-color: #ffcdd2; }
-
-    th.asc::after { content: " ▲"; }
-    th.desc::after { content: " ▼"; }
   </style>
 </head>
 <body>
@@ -95,31 +89,6 @@ export async function generateStudentReport({ username }) {
         .join("")}
     </tbody>
   </table>
-
-    <script>
-    document.querySelectorAll("th").forEach(th => {
-      th.addEventListener("click", function () {
-        const table = th.closest("table");
-        const index = [...th.parentNode.children].indexOf(th);
-        const rows = [...table.querySelectorAll("tbody tr")];
-        const asc = !th.classList.contains("asc");
-
-        rows.sort((a, b) => {
-          const aText = a.children[index].textContent.trim();
-          const bText = b.children[index].textContent.trim();
-          const isNumeric = index === 0; // column # is index 0
-          return asc
-            ? (isNumeric ? parseInt(aText) - parseInt(bText) : aText.localeCompare(bText, 'pt-BR'))
-            : (isNumeric ? parseInt(bText) - parseInt(aText) : bText.localeCompare(aText, 'pt-BR'));
-        });
-
-        rows.forEach(row => table.querySelector("tbody").appendChild(row));
-        table.querySelectorAll("th").forEach(t => t.classList.remove("asc", "desc"));
-        th.classList.toggle("asc", asc);
-        th.classList.toggle("desc", !asc);
-      });
-    });
-  </script>
 </body>
 </html>`;
 
