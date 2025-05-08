@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 import Database from "better-sqlite3";
+import puppeteer from 'puppeteer';
+
 
 export async function generateStudentReport({ username }) {
   const db = new Database("db/database.db");
@@ -130,4 +132,21 @@ export async function generateStudentReport({ username }) {
   return filepath;
 }
 
-// school and classname are undefined
+
+export async function exportHtmlToPdf(htmlPath, pdfPath) {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  const absoluteHtmlPath = `file://${path.resolve(htmlPath)}`;
+  await page.goto(absoluteHtmlPath, { waitUntil: 'networkidle0' });
+
+  await page.pdf({
+    path: pdfPath,
+    format: 'A4',
+    printBackground: true,
+    margin: { top: '20mm', bottom: '20mm', left: '15mm', right: '15mm' }
+  });
+
+  await browser.close();
+}
+

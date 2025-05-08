@@ -18,7 +18,10 @@ import {
 } from "./dbAddUsers.js";
 
 import { checkAccess } from "./middleware.js";
-import { generateStudentReport } from "./generateStudentReport.js";
+import {
+  generateStudentReport,
+  exportHtmlToPdf,
+} from "./generateStudentReport.js";
 import "./dbSetup.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -61,7 +64,6 @@ app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "login.html"));
 });
 
-
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
   const user = getUserByUsername(username);
@@ -71,7 +73,7 @@ app.post("/login", (req, res) => {
 
     if (user.type === "teacher") {
       // Redirect teacher to report form
-      res.redirect("/teacher_login.html")
+      res.redirect("/teacher_login.html");
       // res.redirect("/studentReport.html");
     } else if (user.type === "student") {
       const progress = getUserProgress(username);
@@ -89,24 +91,10 @@ app.get("/addUserForm", (req, res) => {
 });
 
 app.post("/addUserPost", (req, res) => {
-  const {
-    name,
-    username,
-    password,
-    email,
-    class_id,
-    type,
-  } = req.body;
+  const { name, username, password, email, class_id, type } = req.body;
   try {
     console.log(type);
-    addUser(
-      name,
-      username,
-      password,
-      email,
-      class_id,
-      type
-    );
+    addUser(name, username, password, email, class_id, type);
     res.redirect("/?success=1");
   } catch (err) {
     console.error("Erro ao adicionar usuário:", err);
@@ -212,20 +200,50 @@ app.post("/addSchoolWithClasses", (req, res) => {
   }
 });
 
+// app.post("/generate-report", async (req, res) => {
+//   try {
+//     const { school, class_id: classId, student: username } = req.body;
+
+//     if (!school || !classId || !username) {
+//       return res.status(400).send("Dados ausentes do formulário.");
+//     }
+
+//     const reportPath = await generateStudentReport({
+//       username,
+//     });
+
+//     // res.redirect(`/reports/${path.basename(reportPath)}`);
+
+//     // Convert HTML to PDF
+//     const pdfPath = reportPath.replace(/\.html$/, '.pdf');
+//     await exportHtmlToPdf(reportPath, pdfPath);
+
+//     // Redirect to PDF file instead of HTML
+//     res.redirect(`/reports/${path.basename(pdfPath)}`);
+//   } catch (err) {
+//     console.error("❌ Erro ao gerar relatório:", err);
+//     res.status(500).send("Erro ao gerar o relatório.");
+//   }
+// });
+
 app.post("/generate-report", async (req, res) => {
   try {
-    const { school, class_id: classId, student: username } = req.body;
+    const { school, class_id: classId, student: username, format } = req.body;
 
     if (!school || !classId || !username) {
       return res.status(400).send("Dados ausentes do formulário.");
     }
 
+    const reportPath = await generateStudentReport({ username });
 
-    const reportPath = await generateStudentReport({
-      username,
-    });
+    if (format === "pdf") {
+      const pdfPath = reportPath.replace(/\.html$/, ".pdf");
+      await exportHtmlToPdf(reportPath, pdfPath);
+      return res.redirect(`/reports/${path.basename(pdfPath)}`);
+    }
 
-    res.redirect(`/reports/${path.basename(reportPath)}`);
+    // default to HTML
+    return res.redirect(`/reports/${path.basename(reportPath)}`);
   } catch (err) {
     console.error("❌ Erro ao gerar relatório:", err);
     res.status(500).send("Erro ao gerar o relatório.");
