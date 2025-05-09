@@ -1,99 +1,107 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DigiFCI</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f0f8ff;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-
-    header {
-      margin-bottom: 30px;
-    }
-
-    img.logo {
-      height: 120px;
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      font-size: 2.5em;
-      margin: 0;
-    }
-
-    p.subtitle {
-      font-size: 1.1em;
-      color: #444;
-      margin-top: 5px;
-    }
-
-    .button-container {
-      margin-top: 40px;
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    a.button {
-      background-color: #007acc;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 1.1em;
-      transition: background-color 0.3s ease;
-    }
-
-    a.button:hover {
-      background-color: #005fa3;
-    }
-  </style>
-</head>
-<body>
-      <header>
-        <!-- <h1>DigiFCI</h1> -->
-        <div class="logo-row">
-          <img src="figs/logo.png" alt="DigiFCI Logo" class="logo" />
-          <img src="figs/logo_MNPEF.png" alt="MNPEF Logo" class="logo mnpef" />
-        </div>
-        <!-- <p class="subtitle">Mestrado Nacional Profissional em Ensino de Física</p> -->
-      </header>
-
-  <div class="button-container">
-    <a href="http://localhost:3000/addUser.html" class="button">Registro de Usuário</a>
-    <a href="http://localhost:3000/addSchools.html" class="button">Adicionar Escola</a>
-    <a href="http://localhost:3000/studentReport.html" class="button">Relatório de Estudante</a>
-  </div>
-
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("success") === "1") {
-        const message = document.createElement("div");
-        message.textContent = "Usuário registrado com sucesso!";
-        message.style.backgroundColor = "#d4edda";
-        message.style.color = "#155724";
-        message.style.padding = "10px";
-        message.style.marginBottom = "20px";
-        message.style.borderRadius = "5px";
-        message.style.border = "1px solid #c3e6cb";
-        document.body.prepend(message);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DigiFCI</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f0f8ff;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
       }
-    });
-  </script>
-  
-</body>
+
+      header {
+        margin-bottom: 30px;
+      }
+
+      img.logo {
+        height: 120px;
+        margin-bottom: 10px;
+      }
+
+      h1 {
+        font-size: 2.5em;
+        margin: 0;
+      }
+
+      p.subtitle {
+        font-size: 1.1em;
+        color: #444;
+        margin-top: 5px;
+      }
+
+      .button-container {
+        margin-top: 40px;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      a.button {
+        background-color: #007acc;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 1.1em;
+        transition: background-color 0.3s ease;
+      }
+
+      a.button:hover {
+        background-color: #005fa3;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <!-- <h1>DigiFCI</h1> -->
+      <div class="logo-row">
+        <img src="figs/logo.png" alt="DigiFCI Logo" class="logo" />
+        <img src="figs/logo_MNPEF.png" alt="MNPEF Logo" class="logo mnpef" />
+      </div>
+      <!-- <p class="subtitle">Mestrado Nacional Profissional em Ensino de Física</p> -->
+    </header>
+
+    <div class="button-container">
+      <a href="http://localhost:3000/addUser.html" class="button"
+        >Registro de Usuário</a
+      >
+      <a href="http://localhost:3000/addSchools.html" class="button"
+        >Adicionar Escola</a
+      >
+      <a href="http://localhost:3000/studentReport.html" class="button"
+        >Relatório de Estudante</a
+      >
+      <a href="http://localhost:3000/classReport.html" class="button"
+        >Relatório de Turma</a
+      >
+    </div>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("success") === "1") {
+          const message = document.createElement("div");
+          message.textContent = "Usuário registrado com sucesso!";
+          message.style.backgroundColor = "#d4edda";
+          message.style.color = "#155724";
+          message.style.padding = "10px";
+          message.style.marginBottom = "20px";
+          message.style.borderRadius = "5px";
+          message.style.border = "1px solid #c3e6cb";
+          document.body.prepend(message);
+        }
+      });
+    </script>
+  </body>
 </html>

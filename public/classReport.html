@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gerar Relatório de Estudante</title>
+  <style>
+    body {
+      /* font-family: Arial, sans-serif;
+      margin: 2rem;
+      background-color: #f9f9f9; */
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f8ff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+    }
+
+    form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+
+    select, button {
+      font-size: 1rem;
+      padding: 0.4rem;
+      margin-top: 0.3rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 2rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h2>Gerar Relatório de Turma</h2>
+  <form action="/class-report" method="POST">
+    <label for="school">Escola:</label>
+    <select id="school" name="school" required>
+      <option value="">Carregando escolas...</option>
+    </select>
+
+    <label for="class_id">Turma:</label>
+    <select id="class_id" name="class_id" required>
+      <option value="">Selecione a Escola</option>
+    </select>
+
+    <!-- <button type="submit">Gerar Relatório</button> -->
+    <button type="submit" name="format" value="html">Gerar Relatório HTML</button>
+    <button type="submit" name="format" value="pdf">Gerar Relatório PDF</button>
+
+  </form>
+
+  <script>
+    async function populateSchools() {
+      try {
+        const res = await fetch("/api/schools");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const schools = await res.json();
+
+        const schoolSelect = document.getElementById("school");
+        schoolSelect.innerHTML = "";
+
+        schools.forEach(({ id, name }) => {
+          const option = document.createElement("option");
+          option.value = id;
+          option.textContent = name;
+          schoolSelect.appendChild(option);
+        });
+
+        if (schools.length > 0) {
+          schoolSelect.value = schools[0].id;
+          populateClasses(schools[0].id);
+        }
+      } catch (err) {
+        console.error("Error loading schools:", err);
+        alert("⚠️ Failed to load schools.");
+      }
+    }
+
+    async function populateClasses(schoolId) {
+      try {
+        const res = await fetch(`/api/classes?school_id=${schoolId}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const classes = await res.json();
+
+        const classSelect = document.getElementById("class_id");
+        classSelect.innerHTML = "";
+
+        classes.forEach(({ id, name }) => {
+          const option = document.createElement("option");
+          option.value = id;
+          option.textContent = name;
+          classSelect.appendChild(option);
+        });
+
+        // if (classes.length > 0) {
+        //   classSelect.value = classes[0].id;
+        //   populateStudents(classes[0].id);
+        // }
+      } catch (err) {
+        console.error("Error loading classes:", err);
+        alert("⚠️ Failed to load classes.");
+        document.getElementById("class").innerHTML = "<option disabled>Erro</option>";
+      }
+    }
+
+    async function populateStudents(classId) {
+      try {
+        const res = await fetch(`/api/students?class_id=${classId}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const students = await res.json();
+
+        const studentSelect = document.getElementById("student");
+        studentSelect.innerHTML = "";
+
+        students.forEach(({ username, name }) => {
+          const option = document.createElement("option");
+          option.value = username;
+          option.textContent = name;
+          studentSelect.appendChild(option);
+        });
+      } catch (err) {
+        console.error("Error loading students:", err);
+        alert("⚠️ Failed to load students.");
+        document.getElementById("student").innerHTML = "<option disabled>Erro</option>";
+      }
+    }
+
+    window.onload = () => {
+      populateSchools();
+
+      document.getElementById("school").addEventListener("change", (e) => {
+        populateClasses(e.target.value);
+        document.getElementById("student").innerHTML = "<option>Selecione uma turma</option>";
+      });
+
+      document.getElementById("class").addEventListener("change", (e) => {
+        populateStudents(e.target.value);
+      });
+    };
+  </script>
+</body>
+</html>

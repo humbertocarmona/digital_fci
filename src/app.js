@@ -22,6 +22,7 @@ import {
   generateStudentReport,
   exportHtmlToPdf,
 } from "./generateStudentReport.js";
+import { generateClassReport } from "./generateClassReport.js";
 import "./dbSetup.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -249,6 +250,32 @@ app.post("/generate-report", async (req, res) => {
     res.status(500).send("Erro ao gerar o relatório.");
   }
 });
+
+app.post("/class-report", async (req, res) => {
+  try {
+    const { school: school_id, class_id, format } = req.body;
+    console.log("escola " + school_id)
+    console.log(class_id)
+    if (!school_id || !class_id) {
+      return res.status(400).send("Dados ausentes do formulário.");
+    }
+
+    const reportPath = await generateClassReport({ class_id });
+
+    if (format === "pdf") {
+      const pdfPath = reportPath.replace(/\.html$/, ".pdf");
+      await exportHtmlToPdf(reportPath, pdfPath);
+      return res.redirect(`/reports/${path.basename(pdfPath)}`);
+    }
+
+    // default to HTML
+    return res.redirect(`/reports/${path.basename(reportPath)}`);
+  } catch (err) {
+    console.error("❌ Erro ao gerar relatório:", err);
+    res.status(500).send("Erro ao gerar o relatório.");
+  }
+});
+
 
 // Start server
 app.listen(PORT, () => {
