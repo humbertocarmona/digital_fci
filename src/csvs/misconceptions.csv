@@ -1,15 +1,15 @@
 ﻿id_misconception,main_misconception,specific_misconception,id_main_concept
-K1,Cinemática,posição-velocidade não diferenciadas,K
-K2,Cinemática,velocidade-aceleração não diferenciadas,K
+K1,Cinemática,Posição e Velocidade não diferenciadas,K
+K2,Cinemática,Velocidade e Aceleração não diferenciadas,K
 K3,Cinemática,Composição de velocidade não vetorial,K
-I1,Impulso,"Impulso fornecido pelo ""impacto""",I
-I2,Impulso,Perda/recuperação do Impulso original,I
-I3,Impulso,Dissipação do impulso,I
-I4,Impulso,Acúmulo gradual/retardado de impulso,I
-I5,Impulso,impulso  circular,I
+I1,Ímpeto,Ímpeto fornecido por ""batida"",I
+I2,Ímpeto,Perda ou recuperação do ímpeto original,I
+I3,Ímpeto,Dissipação do ímpeto,I
+I4,Ímpeto,Acúmulo gradual/retardado de ímpeto,I
+I5,Ímpeto,Ímpeto circular,I
 AF1,Força Ativa,Somente agentes ativos exercem forças,AF
 AF2,Força Ativa,Movimento implica força ativa,AF
-AF3,Força Ativa,Nenhum movimento implica nenhuma força,AF
+AF3,Força Ativa,Nenhum movimento implica nenhuma força ativa,AF
 AF4,Força Ativa,Velocidade proporcional à força aplicada,AF
 AF5,Força Ativa,Aceleração implica aumento de força,AF
 AF6,Força Ativa,Força causa aceleração até a velocidade terminal,AF
@@ -22,33 +22,33 @@ CI3,Concatenação de Influências,A última força a agir determina o movimento
 CF,Outras Influências no Movimento,Força centrífuga,CF
 OB,Outras Influências no Movimento,Obstáculos não exercem força,OB
 R1,Resistência,A massa faz as coisas pararem,R
-R2,Resistência,Movimento quando a força supera a resistência,R
-R3,Resistência,Resistência se opõe à força/ímpeto,R
-G1,Gravidade,Gravidade assistida pela pressão do ar,G
+R2,Resistência,Movimento ocorre quando a força supera a resistência,R
+R3,Resistência,Resistência se opõe à força ou ímpeto,R
+G1,Gravidade,Gravidade ajudada pela pressão do ar,G
 G2,Gravidade,Gravidade intrínseca à massa,G
 G3,Gravidade,Objetos mais pesados caem mais rápido,G
-G4,Gravidade,Gravidade aumenta à medida que os objetos caem,G
-G5,Gravidade,Gravidade atua após o fim do ímpeto,G
-C1,Cinemática,velocidade e  posição diferenciadas,C
+G4,Gravidade,A gravidade aumenta à medida que os objetos caem,G
+G5,Gravidade,A gravidade atua quando o ímpeto termina,G
+C1,Cinemática,Velocidade e posição diferenciadas,C
 C2,Cinemática,Aceleração e velocidade  diferenciadas ,C
 C3,Cinemática,Aceleração constante implica orbita parabólica ,C
 C4,Cinemática,Aceleração constante implica variação da velocidade,C
 C5,Cinemática,Soma vetorial de velocidades,C
-PL1,Primeira lei,Sem força,PL
-PL2,Primeira lei,Direção da velocidade constante,PL
-PL3,Primeira lei,Velocidade escalar constante,PL
-PL4,Primeira lei,Com forças que se cancelam,PL
+PL1,Primeira lei,Primeira lei sem força,PL
+PL2,Primeira lei,Primeira lei com direção da velocidade constante,PL
+PL3,Primeira lei,Primeira lei com velocidade escalar constante,PL
+PL4,Primeira lei,Primeira lei com forças que se cancelam,PL
 SL1,Segunda Lei,Força impulsiva,SL
 SL2,Segunda Lei,Força constante implica aceleração constante,SL
-TL1,Terceira Lei,Para forças impulsivas,TL
-TL2,Terceira Lei,Para forças contínuas,TL
-PS1,Princípio da Superposição,Soma vetorial,PS
-PS2,Princípio da Superposição,Forças que se cancelam,PS
-TF1,Tipos de Força,Contato sólido passivo,TF
-TF2,Tipos de Força,Contato sólido impulsivo,TF
-TF3,Tipos de Força,Contato sólido: Atrito se opõe ao movimento,TF
+TL1,Terceira Lei,Terceira Lei para forças impulsivas,TL
+TL2,Terceira Lei,Terceira Lei para forças contínuas,TL
+PS1,Princípio da Superposição,Superposição: soma vetorial,PS
+PS2,Princípio da Superposição,Superposição: forças que se cancelam,PS
+TF1,Tipos de Força,Contato sólido: passivo,TF
+TF2,Tipos de Força,Contato sólido: impulsivo,TF
+TF3,Tipos de Força,Contato sólido: atrito se opõe ao movimento,TF
 TF4,Tipos de Força,Contato com fluido: resistência do ar,TF
 TF5,Tipos de Força,Contato com fluido: Empuxo (pressão do ar),TF
 TF6,Tipos de Força,Gravitação,TF
-TF7,Tipos de Força,Gravidade: A aceleração é independente do peso,TF
-TF8,Tipos de Força,Gravidade: Trajetória parabólica,TF
+TF7,Tipos de Força,Gravidade: a aceleração é independente do peso,TF
+TF8,Tipos de Força,Gravidade: trajetória parabólica,TF

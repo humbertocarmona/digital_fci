@@ -78,7 +78,11 @@ app.post("/login", (req, res) => {
       // res.redirect("/studentReport.html");
     } else if (user.type === "student") {
       const progress = getUserProgress(username);
-      res.redirect(`questions/question${progress}`);
+      if (progress < 31) {
+        res.redirect(`questions/question${progress}`);
+      }else{
+        res.redirect(`questions/question01`);
+      }
     } else {
       res.status(400).send("Tipo de usuário desconhecido.");
     }
@@ -254,8 +258,8 @@ app.post("/generate-report", async (req, res) => {
 app.post("/class-report", async (req, res) => {
   try {
     const { school: school_id, class_id, format } = req.body;
-    console.log("escola " + school_id)
-    console.log(class_id)
+    console.log("escola " + school_id);
+    console.log(class_id);
     if (!school_id || !class_id) {
       return res.status(400).send("Dados ausentes do formulário.");
     }
@@ -276,8 +280,9 @@ app.post("/class-report", async (req, res) => {
   }
 });
 
-
 // Start server
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(
+    `Server running at http://localhost:${PORT}  or  http://coruja.fisica.ufc.br:${PORT}`
+  );
 });

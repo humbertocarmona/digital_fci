@@ -1,85 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <title>Questão 14</title>
-    <p id="user-info" style="text-align:right; font-style: italic; margin-bottom: 10px;"></p>
+    <p
+      id="user-info"
+      style="text-align: right; font-style: italic; margin-bottom: 10px"
+    ></p>
 
     <script src="../../node_modules/p5/lib/p5.js"></script>
-    <script src="./cars.js"></script>
-    <script src="./sketch.js"></script>
+    <!-- <script src="./sketch.js"></script> -->
     <script>
-        function submitAnswer() {
-            const form = document.getElementById('questionForm');
-            const formData = new FormData(form);
-            const answer = formData.get('answer');
+      function submitAnswer() {
+        const form = document.getElementById("questionForm");
+        const formData = new FormData(form);
+        const answer = formData.get("answer");
 
-            if (!answer) {
-                alert("Por favor escolha um item antes de enviar.");
-                return;
-            }
-            fetch('/submitAnswer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ questionNumber: 14, answer }),
-            })
-                .then(response => response.text())
-                .then(data => {
-                    if(data!=="ok"){
-                        alert(data);
-                    }
-                    window.location.href = '/questions/question15';
-                })
-                .catch(error => console.error('Error:', error));
+        if (!answer) {
+          alert("Por favor escolha um item antes de enviar.");
+          return;
         }
+        fetch("/submitAnswer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ questionNumber: 14, answer }),
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            if (data !== "ok") {
+              alert(data);
+            }
+            window.location.href = "/questions/question15";
+          })
+          .catch((error) => console.error("Error:", error));
+      }
     </script>
-        <script>
-        fetch('/currentUser')
-            .then(response => {
-            if (!response.ok) throw new Error("Usuário não autenticado");
-            return response.json();
-            })
-            .then(data => {
-            document.getElementById('user-info').textContent = `Usuário: ${data.username}`;
-            })
-            .catch(err => {
-            document.getElementById('user-info').textContent = 'Usuário não autenticado';
-            });
+    <script>
+      fetch("/currentUser")
+        .then((response) => {
+          if (!response.ok) throw new Error("Usuário não autenticado");
+          return response.json();
+        })
+        .then((data) => {
+          document.getElementById(
+            "user-info"
+          ).textContent = `Usuário: ${data.username}`;
+        })
+        .catch((err) => {
+          document.getElementById("user-info").textContent =
+            "Usuário não autenticado";
+        });
     </script>
-<link rel="stylesheet" type="text/css" href="style.css">
-        <meta charset="utf-8" />
-</head>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <meta charset="utf-8" />
+  </head>
 
-<body>
+  <body>
     <div id="sim-wrapper">
-        <main></main>
-        <div id="sim-controls"></div>
-</div>
+      <main></main>
+      <div id="sim-controls"></div>
+    </div>
     <div class="enunciado">
-        <p>
-            Uma bola de boliche cai acidentalmente do compartimento de carga de um
-            avião enquanto ele voa em direção horizontal. Como observado por uma
-            pessoa em pé no chão e olhando para o avião como na figura abaixo, qual
-            dos caminhos 1-5 a bola de boliche seguiria mais de perto após deixar o
-            avião?
-        </p>
-        <img src="../figs/q_14.jpeg" alt="description">
+      <p>
+        Uma bola de boliche cai acidentalmente do compartimento de carga de um
+        avião enquanto ele voa em direção horizontal. Como observado por uma
+        pessoa em pé no chão e olhando para o avião como na figura abaixo, qual
+        dos caminhos 1-5 a bola de boliche seguiria mais de perto após deixar o
+        avião?
+      </p>
+      <div style="text-align: center">
+        <img src="../figs/q_14.jpeg" alt="Description of the image" />
+      </div>
     </div>
     <form id="questionForm">
-         <label for="option1">
-        <input type="radio" id="option1" name="answer" value="A">A) </label><br>
-         <label for="option2">
-        <input type="radio" id="option2" name="answer" value="B">B) </label><br>
-         <label for="option3">
-        <input type="radio" id="option3" name="answer" value="C">C) </label><br>
-         <label for="option4">
-        <input type="radio" id="option4" name="answer" value="D">D) </label><br>
-         <label for="option5">
-        <input type="radio" id="option5" name="answer" value="E">E) </label><br>
-        <button type="button" onclick="submitAnswer()">Enviar</button>
+      <label for="option1">
+        <input type="radio" id="option1" name="answer" value="A" />A) (1) </label
+      ><br />
+      <label for="option2">
+        <input type="radio" id="option2" name="answer" value="B" />B) (2)</label
+      ><br />
+      <label for="option3">
+        <input type="radio" id="option3" name="answer" value="C" />C) (3)</label
+      ><br />
+      <label for="option4">
+        <input type="radio" id="option4" name="answer" value="D" />D) (4)</label
+      ><br />
+      <label for="option5">
+        <input type="radio" id="option5" name="answer" value="E" />E) (5)</label
+      ><br />
+      <button type="button" onclick="submitAnswer()">Enviar</button>
     </form>
-</body>
-
+  </body>
 </html>

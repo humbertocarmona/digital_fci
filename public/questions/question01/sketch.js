@@ -25,16 +25,14 @@ function setup() {
   startButtonA = createButton("Opção A");
   // startButtonA.position(width + 70, height / 2 - 60);
   startButtonA.parent("sim-controls");
-  startButtonA.mousePressed(startSimulationA);
+  startButtonA.mousePressed(startSimulationB);
   startButtonA.style("text-align", "left");
 
   // Criar botão de ajuste B
-  startButtonB = createButton(
-    "Opção B"
-  );
+  startButtonB = createButton("Opção B");
   // startButtonB.position(width + 70, height / 2 - 30);
   startButtonB.parent("sim-controls");
-  startButtonB.mousePressed(startSimulationB);
+  startButtonB.mousePressed(startSimulationA);
   startButtonB.style("text-align", "left");
 
   // Criar botão de ajuste C
@@ -52,7 +50,7 @@ function setup() {
   );
   // startButtonD.position(width + 70, height / 2 + 30);
   startButtonD.parent("sim-controls");
-  startButtonD.mousePressed(startSimulationD);
+  startButtonD.mousePressed(startSimulationE);
   startButtonD.style("text-align", "left");
 
   // Criar botão de ajuste E
@@ -61,7 +59,7 @@ function setup() {
   );
   // startButtonE.position(width + 70, height / 2 + 60);
   startButtonE.parent("sim-controls");
-  startButtonE.mousePressed(startSimulationE);
+  startButtonE.mousePressed(startSimulationD);
   startButtonE.style("text-align", "left");
 
   startButtonR = createButton("Reiniciar");

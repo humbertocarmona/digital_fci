@@ -1,89 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <title>Questão 17</title>
-    <p id="user-info" style="text-align:right; font-style: italic; margin-bottom: 10px;"></p>
+    <p
+      id="user-info"
+      style="text-align: right; font-style: italic; margin-bottom: 10px"
+    ></p>
 
     <script src="../../node_modules/p5/lib/p5.js"></script>
-    <script src="./cars.js"></script>
-    <script src="./sketch.js"></script>
+    <!-- <script src="./sketch.js"></script> -->
     <script>
-        function submitAnswer() {
-            const form = document.getElementById('questionForm');
-            const formData = new FormData(form);
-            const answer = formData.get('answer');
+      function submitAnswer() {
+        const form = document.getElementById("questionForm");
+        const formData = new FormData(form);
+        const answer = formData.get("answer");
 
-            if (!answer) {
-                alert("Por favor escolha um item antes de enviar.");
-                return;
-            }
-            fetch('/submitAnswer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ questionNumber: 17, answer }),
-            })
-                .then(response => response.text())
-                .then(data => {
-                    if(data!=="ok"){
-                        alert(data);
-                    }
-                    window.location.href = '/questions/question18';
-                })
-                .catch(error => console.error('Error:', error));
+        if (!answer) {
+          alert("Por favor escolha um item antes de enviar.");
+          return;
         }
+        fetch("/submitAnswer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ questionNumber: 17, answer }),
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            if (data !== "ok") {
+              alert(data);
+            }
+            window.location.href = "/questions/question18";
+          })
+          .catch((error) => console.error("Error:", error));
+      }
     </script>
-        <script>
-        fetch('/currentUser')
-            .then(response => {
-            if (!response.ok) throw new Error("Usuário não autenticado");
-            return response.json();
-            })
-            .then(data => {
-            document.getElementById('user-info').textContent = `Usuário: ${data.username}`;
-            })
-            .catch(err => {
-            document.getElementById('user-info').textContent = 'Usuário não autenticado';
-            });
+    <script>
+      fetch("/currentUser")
+        .then((response) => {
+          if (!response.ok) throw new Error("Usuário não autenticado");
+          return response.json();
+        })
+        .then((data) => {
+          document.getElementById(
+            "user-info"
+          ).textContent = `Usuário: ${data.username}`;
+        })
+        .catch((err) => {
+          document.getElementById("user-info").textContent =
+            "Usuário não autenticado";
+        });
     </script>
-<link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <meta charset="utf-8" />
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="sim-wrapper">
-        <main></main>
-        <div id="sim-controls"></div>
-</div>
+      <main></main>
+      <div id="sim-controls"></div>
+    </div>
     <div class="enunciado">
-        <img src="../figs/q_17.jpeg" alt="description">
-        <p>
-            Um elevador está sendo levantado em um poço de elevador a uma velocidade
-            constante por um cabo de aço, como mostrado na figura a seguir. Todos os
-            efeitos de atrito são desprezíveis. Nessa situação, as forças no
-            elevador são tais que:
-        </p>
+      <p>
+        Um elevador está sendo levantado em um poço de elevador a uma velocidade
+        constante por um cabo de aço, como mostrado na figura a seguir. Todos os
+        efeitos de atrito são desprezíveis. Nessa situação, as forças no
+        elevador são tais que:
+      </p>
+      <div style="text-align: center">
+        <img src="../figs/q_17a.jpg" alt="description" />
+      </div>
     </div>
     <form id="questionForm">
-         <label for="option1">
-        <input type="radio" id="option1" name="answer" value="A">A) A força para cima exercida pelo cabo é maior que a força para baixo da
-            gravidade.</label><br>
-         <label for="option2">
-        <input type="radio" id="option2" name="answer" value="B">B) A força para cima exercida pelo cabo é igual à força para baixo da
-            gravidade.</label><br>
-         <label for="option3">
-        <input type="radio" id="option3" name="answer" value="C">C) A força para cima exercida pelo cabo é menor que a força para baixo da gravidade.
-        </label><br>
-         <label for="option4">
-        <input type="radio" id="option4" name="answer" value="D">D) A força para cima exercida pelo cabo é maior que a soma da força para baixo da gravidade
-            e uma força para baixo devido ao ar.</label><br>
-         <label for="option5">
-        <input type="radio" id="option5" name="answer" value="E">E) Nenhuma das anteriores. (O elevador sobe porque o cabo está sendo encurtado, não porque
-            uma força para cima é exercida no elevador pelo cabo).</label><br>
-        <button type="button" onclick="submitAnswer()">Enviar</button>
+      <label for="option1">
+        <input type="radio" id="option1" name="answer" value="A" />A) A força
+        para cima exercida pelo cabo é maior que a força para baixo da
+        gravidade.</label
+      ><br />
+      <label for="option2">
+        <input type="radio" id="option2" name="answer" value="B" />B) A força
+        para cima exercida pelo cabo é igual à força para baixo da
+        gravidade.</label
+      ><br />
+      <label for="option3">
+        <input type="radio" id="option3" name="answer" value="C" />C) A força
+        para cima exercida pelo cabo é menor que a força para baixo da
+        gravidade. </label
+      ><br />
+      <label for="option4">
+        <input type="radio" id="option4" name="answer" value="D" />D) A força
+        para cima exercida pelo cabo é maior que a soma da força para baixo da
+        gravidade e uma força para baixo devido ao ar.</label
+      ><br />
+      <label for="option5">
+        <input type="radio" id="option5" name="answer" value="E" />E) Nenhuma
+        das anteriores. (O elevador sobe porque o cabo está sendo encurtado, não
+        porque uma força para cima é exercida no elevador pelo cabo).</label
+      ><br />
+      <button type="button" onclick="submitAnswer()">Enviar</button>
     </form>
-</body>
-
+  </body>
 </html>

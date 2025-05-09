@@ -6,8 +6,7 @@
     <p id="user-info" style="text-align:right; font-style: italic; margin-bottom: 10px;"></p>
 
     <script src="../../node_modules/p5/lib/p5.js"></script>
-    <script src="./cars.js"></script>
-    <script src="./sketch.js"></script>
+    <!-- <script src="./sketch.js"></script> -->
     <script>
         function submitAnswer() {
             const form = document.getElementById('questionForm');
@@ -84,15 +83,15 @@
     </div>
     <form id="questionForm">
          <label for="option1">
-        <input type="radio" id="option1" name="answer" value="A">(1) </label><br>
+        <input type="radio" id="option1" name="answer" value="A">A) (1) </label><br>
          <label for="option2">
-        <input type="radio" id="option2" name="answer" value="B">(2) </label><br>
+        <input type="radio" id="option2" name="answer" value="B">B) (2) </label><br>
          <label for="option3">
-        <input type="radio" id="option3" name="answer" value="C">(3) </label><br>
+        <input type="radio" id="option3" name="answer" value="C">C) (3) </label><br>
          <label for="option4">
-        <input type="radio" id="option4" name="answer" value="D">(4) </label><br>
+        <input type="radio" id="option4" name="answer" value="D">D) (4) </label><br>
          <label for="option5">
-        <input type="radio" id="option5" name="answer" value="E">(5) </label><br>
+        <input type="radio" id="option5" name="answer" value="E">E) (5) </label><br>
         <button type="button" onclick="submitAnswer()">Enviar</button>
     </form>
 </body>

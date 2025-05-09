@@ -1,98 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <title>Questão 1</title>
-    <p id="user-info" style="text-align:right; font-style: italic; margin-bottom: 10px;"></p>
+    <p
+      id="user-info"
+      style="text-align: right; font-style: italic; margin-bottom: 10px"
+    ></p>
 
     <script src="../../node_modules/p5/lib/p5.js"></script>
-    
+
     <script src="./sketch.js"></script>
     <script>
-        function submitAnswer() {
-            const form = document.getElementById('questionForm');
-            const formData = new FormData(form);
-            const answer = formData.get('answer');
+      function submitAnswer() {
+        const form = document.getElementById("questionForm");
+        const formData = new FormData(form);
+        const answer = formData.get("answer");
 
-            if (!answer) {
-                alert("Por favor escolha um item antes de enviar.");
-                return;
-            }
-
-            fetch('/submitAnswer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ questionNumber: 1, answer }),
-            })
-            .then(response => response.text())
-            .then(data => {
-                if(data!=="ok"){
-                        alert(data);
-                    }
-                    window.location.href = '/questions/question02';
-                })
-                .catch(error => console.error('Error:', error));
+        if (!answer) {
+          alert("Por favor escolha um item antes de enviar.");
+          return;
         }
+
+        fetch("/submitAnswer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ questionNumber: 1, answer }),
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            if (data !== "ok") {
+              alert(data);
+            }
+            window.location.href = "/questions/question02";
+          })
+          .catch((error) => console.error("Error:", error));
+      }
     </script>
     <script>
-        fetch('/currentUser')
-          .then(response => {
-            if (!response.ok) throw new Error("Usuário não autenticado");
-            return response.json();
-          })
-          .then(data => {
-            document.getElementById('user-info').textContent = `Usuário: ${data.username}`;
-          })
-          .catch(err => {
-            document.getElementById('user-info').textContent = 'Usuário não autenticado';
-          });
-      </script>
-    <link rel="stylesheet" type="text/css" href="style.css">
+      fetch("/currentUser")
+        .then((response) => {
+          if (!response.ok) throw new Error("Usuário não autenticado");
+          return response.json();
+        })
+        .then((data) => {
+          document.getElementById(
+            "user-info"
+          ).textContent = `Usuário: ${data.username}`;
+        })
+        .catch((err) => {
+          document.getElementById("user-info").textContent =
+            "Usuário não autenticado";
+        });
+    </script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <meta charset="utf-8" />
-</head>
+  </head>
 
-<body>
-
+  <body>
     <div id="sim-wrapper">
-        <main></main>
-        <div id="sim-controls"></div>
+      <main></main>
+      <div id="sim-controls"></div>
     </div>
-    <title>Questão 01/30 </title>
+    <title>Questão 01/30</title>
     <div class="enunciado">
-        Duas bolas de metal têm o mesmo tamanho, mas uma pesa o dobro da outra. As bolas são soltas do telhado de um
-        prédio de um único andar no mesmo instante (experimente a simulação).
-        O tempo que as bolas levam para chegar ao chão será:
+      Duas bolas de metal têm o mesmo tamanho, mas uma pesa o dobro da outra. As
+      bolas são soltas do telhado de um prédio de um andar no mesmo instante
+      (experimente a simulação). O tempo que as bolas levam para chegar ao chão
+      será:
     </div>
-    <div class="instructions">
-    </div>
+    <div class="instructions"></div>
     <form id="questionForm">
-        <label for="option1"> 
-            <input type="radio" id="option1" name="answer" value="A">
-            A) aproximadamente a metade do tempo para a bola mais pesada em comparação com a mais
-            leve.</label><br>
-        
-        <label for="option2"> 
-            <input type="radio" id="option2" name="answer" value="B">
-            B) aproximadamente a metade do tempo para a bola mais leve em comparação com a mais
-            pesada</label><br>
-        <label for="option3"> 
-            <input type="radio" id="option3" name="answer" value="C">
-            C) aproximadamente o mesmo para ambas as bolas </label><br>
-        
-        <label for="option4"> 
-            <input type="radio" id="option4" name="answer" value="D">
-            D) consideravelmente menor para a bola mais pesada, mas não necessariamente a
-                metade do tempo.</label><br>
-        <label for="option5"> 
-            <input type="radio" id="option5" name="answer" value="E"> 
-            E) consideravelmente menor para a bola mais leve, mas não
-            necessariamente a
-                metade do tempo.</label><br>
-    
-        <button type="button" onclick="submitAnswer()">Enviar</button>
-    </form>
-</body>
+      <label for="option1">
+        <input type="radio" id="option1" name="answer" value="A" />
+        A) aproximadamente a metade do tempo para a bola mais pesada.</label
+      ><br />
 
+      <label for="option2">
+        <input type="radio" id="option2" name="answer" value="B" />
+        B) aproximadamente a metade do tempo para a bola mais leve.</label
+      ><br />
+      <label for="option3">
+        <input type="radio" id="option3" name="answer" value="C" />
+        C) aproximadamente o mesmo para ambas as bolas </label
+      ><br />
+
+      <label for="option4">
+        <input type="radio" id="option4" name="answer" value="D" />
+        D) consideravelmente menor para a bola mais pesada, mas não
+        necessariamente a metade do tempo.</label
+      ><br />
+      <label for="option5">
+        <input type="radio" id="option5" name="answer" value="E" />
+        E) consideravelmente menor para a bola mais leve, mas não
+        necessariamente a metade do tempo.</label
+      ><br />
+
+      <button type="button" onclick="submitAnswer()">Enviar</button>
+    </form>
+  </body>
 </html>

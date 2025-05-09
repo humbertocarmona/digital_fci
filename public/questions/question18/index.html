@@ -1,88 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <title>Questão 18</title>
-    <p id="user-info" style="text-align:right; font-style: italic; margin-bottom: 10px;"></p>
+    <p
+      id="user-info"
+      style="text-align: right; font-style: italic; margin-bottom: 10px"
+    ></p>
 
     <script src="../../node_modules/p5/lib/p5.js"></script>
-    <script src="./cars.js"></script>
-    <script src="./sketch.js"></script>
+    <!-- <script src="./sketch.js"></script> -->
     <script>
-        function submitAnswer() {
-            const form = document.getElementById('questionForm');
-            const formData = new FormData(form);
-            const answer = formData.get('answer');
+      function submitAnswer() {
+        const form = document.getElementById("questionForm");
+        const formData = new FormData(form);
+        const answer = formData.get("answer");
 
-            if (!answer) {
-                alert("Por favor escolha um item antes de enviar.");
-                return;
-            }
-            fetch('/submitAnswer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ questionNumber: 18, answer }),
-            })
-                .then(response => response.text())
-                .then(data => {
-                    if(data!=="ok"){
-                        alert(data);
-                    }
-                    window.location.href = '/questions/question19';
-                })
-                .catch(error => console.error('Error:', error));
+        if (!answer) {
+          alert("Por favor escolha um item antes de enviar.");
+          return;
         }
+        fetch("/submitAnswer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ questionNumber: 18, answer }),
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            if (data !== "ok") {
+              alert(data);
+            }
+            window.location.href = "/questions/question19";
+          })
+          .catch((error) => console.error("Error:", error));
+      }
     </script>
-        <script>
-        fetch('/currentUser')
-            .then(response => {
-            if (!response.ok) throw new Error("Usuário não autenticado");
-            return response.json();
-            })
-            .then(data => {
-            document.getElementById('user-info').textContent = `Usuário: ${data.username}`;
-            })
-            .catch(err => {
-            document.getElementById('user-info').textContent = 'Usuário não autenticado';
-            });
+    <script>
+      fetch("/currentUser")
+        .then((response) => {
+          if (!response.ok) throw new Error("Usuário não autenticado");
+          return response.json();
+        })
+        .then((data) => {
+          document.getElementById(
+            "user-info"
+          ).textContent = `Usuário: ${data.username}`;
+        })
+        .catch((err) => {
+          document.getElementById("user-info").textContent =
+            "Usuário não autenticado";
+        });
     </script>
-<link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <meta charset="utf-8" />
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="sim-wrapper">
-        <main></main>
-        <div id="sim-controls"></div>
-</div>
+      <main></main>
+      <div id="sim-controls"></div>
+    </div>
     <div class="enunciado">
-        <img src="../figs/q_18.jpeg" alt="description">
-        <p>
-            A figura a seguir mostra um menino balançando, começando em um ponto
-            mais alto que P. Considere as seguintes forças distintas:
-        </p>
-        <ol>
-            <li> uma força descendente da gravidade. <\li>
-            <li> uma força exercida pela corda apontando de P para O. <\li>
-            <li> uma força na direção do movimento do menino. <\li>
-            <li> uma força apontando de O para P. <\li>
-        </ol>
+      <p>
+        A figura abaixo mostra um menino balançando, começando em um ponto mais
+        alto que P. Considere as seguintes forças distintas:
+      </p>
+      <div style="text-align: center">
+        <img src="../figs/q_18.jpeg" alt="description" />
+      </div>
+      <ol>
+        <li>uma força descendente da gravidade.</li>
+        <li>uma força exercida pela corda apontando de P para O.</li>
+        <li>uma força na direção do movimento do menino.</li>
+        <li>uma força apontando de O para P.</li>
+      </ol>
     </div>
     <form id="questionForm">
-         <label for="option1">
-        <input type="radio" id="option1" name="answer" value="A">A) A apenas</label><br>
-         <label for="option2">
-        <input type="radio" id="option2" name="answer" value="B">B) A e B </label><br>
-         <label for="option3">
-        <input type="radio" id="option3" name="answer" value="C">C) A e C </label><br>
-         <label for="option4">
-        <input type="radio" id="option4" name="answer" value="D">D) A, B e C </label><br>
-         <label for="option5">
-        <input type="radio" id="option5" name="answer" value="E">E) A, C e D</label><br>
-        <button type="button" onclick="submitAnswer()">Enviar</button>
+      <label for="option1">
+        <input type="radio" id="option1" name="answer" value="A" />A) 1
+        apenas</label
+      ><br />
+      <label for="option2">
+        <input type="radio" id="option2" name="answer" value="B" />B) 1 e 2 </label
+      ><br />
+      <label for="option3">
+        <input type="radio" id="option3" name="answer" value="C" />C) 1 e 3 </label
+      ><br />
+      <label for="option4">
+        <input type="radio" id="option4" name="answer" value="D" />D) 1, 2 e 3 </label
+      ><br />
+      <label for="option5">
+        <input type="radio" id="option5" name="answer" value="E" />E) 1, 3 e
+        4</label
+      ><br />
+      <button type="button" onclick="submitAnswer()">Enviar</button>
     </form>
-</body>
-
+  </body>
 </html>

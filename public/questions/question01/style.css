@@ -18,7 +18,7 @@ main {
 
 /* Style for the question text (enunciado) */
 .enunciado {
-  max-width: 700px;
+  max-width: 800px;
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
@@ -30,7 +30,7 @@ main {
 
 /* Optional additional instructions */
 .instructions {
-  max-width: 700px;
+  max-width: 800px;
   margin-top: 10px;
   text-align: left;
   font-style: italic;
@@ -40,7 +40,7 @@ main {
 
 /* Form styling */
 form {
-  max-width: 700px;
+  max-width: 800px;
   width: 100%;
   background-color: #ffffff;
   padding: 20px;

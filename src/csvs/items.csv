@@ -10,8 +10,8 @@
 2D,2,"A bola mais pesada atinge o chão consideravelmente mais perto da base da mesa do que a bola mais leve, mas não necessariamente a metade da distância horizontal.",TF7,G3,FALSE
 2E,2,"A bola mais leve atinge o chão consideravelmente mais perto da base da mesa do que a bola mais pesada, mas não necessariamente a metade da distância horizontal.",TF7,G2,FALSE
 3A,3,"Atinge uma velocidade máxima logo após ser solta e depois cai a uma velocidade constante.",TF6,AF6,FALSE
-3B,3,"Acelera à medida que cai porque a atração gravitacional fica consideravelmente mais forte à medida que a pedra se aproxima da Terra.",TF6,AF5,FALSE
-3C,3,"acelera devido a uma força quase constante da gravidade agindo sobre ela.",TF6,TF6,TRUE
+3B,3,"Acelera à medida que cai porque a atração gravitacional fica consideravelmente mais forte à medida que a pedra se aproxima da Terra.",TF6,G4,FALSE
+3C,3,"Acelera devido a uma força quase constante da gravidade agindo sobre ela.",TF6,TF6,TRUE
 3D,3,"Cai devido à tendência natural de todos os objetos descansarem na superfície da Terra.",TF6,G2,FALSE
 3E,3,"Cai devido aos efeitos combinados da força da gravidade empurrando-a para baixo e da força do ar empurrando-a para baixo.",TF6,G1,FALSE
 4A,4,"O caminhão exerce uma quantidade maior de força sobre o carro do que o carro exerce sobre o caminhão.",TL1,AR1,FALSE
