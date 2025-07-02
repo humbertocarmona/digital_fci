@@ -1,6 +1,7 @@
 # Logs
 logs
 old
+other
 *.log
 package-lock.json
 npm-debug.log*
